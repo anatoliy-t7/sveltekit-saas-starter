@@ -15,7 +15,7 @@
 	{/if}
 
 	<div class="text-center">
-		<h2 class="text-2xl font-bold tracking-tight text-primary-900 unstyled">Sign In or Sing Up</h2>
+		<h2 class="text-2xl font-bold tracking-tight text-primary-900 unstyled">Sign In / Register</h2>
 	</div>
 
 	<div class="mt-6">
@@ -32,6 +32,11 @@
 					autocomplete="email"
 					required
 				/>
+				{#if $errors.email}
+					<span class="text-sm text-red-600">
+						{$errors.email}
+					</span>
+				{/if}
 			</label>
 
 			<label for="password" class="label">
@@ -46,6 +51,11 @@
 					autocomplete="current-password"
 					required
 				/>
+				{#if $errors.password}
+					<span class="text-sm text-red-600">
+						{$errors.password}
+					</span>
+				{/if}
 			</label>
 
 			<button type="submit" class="btn variant-filled-primary w-full"> Sign in </button>

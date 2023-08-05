@@ -1,10 +1,13 @@
 import { auth } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { superValidate } from 'sveltekit-superforms/server';
+import { superValidate, setError } from 'sveltekit-superforms/server';
 import { userSchema } from '$lib/zod';
 import { db } from '$lib/server/prisma';
 import { LuciaError } from 'lucia';
+import { generateEmailVerificationToken } from '$lib/server/token';
+import { sendEmail } from '$lib/server/utils';
+import { PUBLIC_DOMAIN } from '$env/static/public';
 
 export const load: PageServerLoad = async (event) => {
 	const authRequest = auth.handleRequest(event);
@@ -20,6 +23,7 @@ export const actions: Actions = {
 		const authRequest = auth.handleRequest(event);
 
 		const form = await superValidate(event.request, userSchema);
+
 		if (!form.valid) return fail(400, { form });
 
 		const checkUser = await db.user.findUnique({
@@ -38,10 +42,9 @@ export const actions: Actions = {
 					e instanceof LuciaError &&
 					(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
 				) {
-					return fail(400, {
-						message: 'Invalid password'
-					});
+					return setError(form, 'password', 'Invalid password');
 				}
+
 				return fail(500, {
 					message: 'An unknown error occurred'
 				});
@@ -51,11 +54,12 @@ export const actions: Actions = {
 				user = await auth.createUser({
 					key: {
 						providerId: 'email', // auth method
-						providerUserId: form.data.email, // unique id when using "username" auth method
+						providerUserId: form.data.email.toLowerCase(), // unique id when using "username" auth method
 						password: form.data.password // hashed by Lucia
 					},
 					attributes: {
-						email: form.data.email
+						email: form.data.email.toLowerCase(),
+						email_verified: false
 					}
 				});
 			} catch (e) {
@@ -65,14 +69,20 @@ export const actions: Actions = {
 			}
 		}
 
+		if (!checkUser || !checkUser?.email_verified) {
+			const token = await generateEmailVerificationToken(user.userId);
+
+			// url to verify tokens
+			const url = `${PUBLIC_DOMAIN}/email-verification?token=${token}`;
+			sendEmail(user.providerUserId, 'Verify email', 'verify-email', url);
+		}
+
 		const session = await auth.createSession({
 			userId: user.userId,
 			attributes: {}
 		});
 		authRequest.setSession(session);
 
-		// redirect to
-		// make sure you don't throw inside a try/catch block!
 		throw redirect(302, '/');
 	}
 };

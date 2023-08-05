@@ -1,16 +1,12 @@
 <script>
 	import IconUserCircle from '~icons/tabler/user-circle';
 	import Dropdown from '$lib/components/Dropdown.svelte';
-
-	// import Logo from '$lib/components/Logo.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let duration = '500ms';
 	export let offset = 0;
 	export let tolerance = 0;
-	/**
-	 * @type {{ user: { role: string; }; }}
-	 */
 	export let data;
 
 	let headerClass = 'pin';
@@ -57,29 +53,8 @@
 	<nav class="dark:bg-primary-900 border-primary-100 bg-white border-b">
 		<div class="flex items-center justify-between max-w-screen-xl px-4 mx-auto">
 			<a href="/" class="flex items-center">
-				<!-- <Logo class="sm:h-9 h-6" /> -->
+				<Logo class="sm:h-9 h-6" />
 			</a>
-			<button
-				data-collapse-toggle="navbar-default"
-				type="button"
-				class="text-primary-500 md:hidden hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:text-primary-400 dark:hover:bg-primary-700 dark:focus:ring-primary-600 inline-flex items-center p-2 ml-3 text-sm rounded-lg"
-				aria-controls="navbar-default"
-				aria-expanded="false"
-			>
-				<span class="sr-only">Open main menu</span>
-				<svg
-					class="w-6 h-6"
-					aria-hidden="true"
-					fill="currentColor"
-					viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg"
-					><path
-						fill-rule="evenodd"
-						d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-						clip-rule="evenodd"
-					/></svg
-				>
-			</button>
 
 			<div class="md:block md:w-auto hidden w-full" id="navbar-default">
 				<ul

@@ -1,6 +1,6 @@
 import { render } from 'svelte-email';
-import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
-import ResetPassword from '$lib/emails/ResetPassword.svelte';
+import VerifyEmail from '$lib/components/emails/VerifyEmail.svelte';
+import ResetPassword from '$lib/components/emails/ResetPassword.svelte';
 import nodemailer from 'nodemailer';
 import { PUBLIC_APP_NAME, PUBLIC_EMAIL } from '$env/static/public';
 import { IncomingWebhook } from '@slack/webhook';
