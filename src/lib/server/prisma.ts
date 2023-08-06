@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client';
+import pagination from 'prisma-extension-pagination';
 import slugify from 'slugify';
 
 const db = new PrismaClient({
 	errorFormat: 'pretty'
-});
+}).$extends(pagination);
 
 const getSlug = async (name: any, collectionName: string) => {
 	const collection = db[collectionName];

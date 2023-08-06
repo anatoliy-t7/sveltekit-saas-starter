@@ -2,6 +2,7 @@ import { error, fail } from '@sveltejs/kit';
 import { db } from '$lib/server/prisma';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { userSchema } from '$lib/zod';
+import { auth } from '$lib/server/lucia';
 
 const accountSchema = userSchema.pick({
 	id: true,
@@ -10,18 +11,19 @@ const accountSchema = userSchema.pick({
 	phone: true
 });
 
-export const load = async ({ locals }) => {
-	const { user } = await locals.auth.validateUser();
+export const load = async (event) => {
+	const authRequest = auth.handleRequest(event);
+	const session = await authRequest.validate();
 
-	const editUser = user?.id
-		? await db.authUser.findUnique({
+	const editUser = session?.user?.userId
+		? await db.user.findUnique({
 				where: {
-					id: user?.id
+					id: session?.user?.userId
 				}
 		  })
 		: null;
 
-	if (user?.id && !editUser) throw error(404, 'User not found.');
+	if (session?.user?.userId && !editUser) throw error(404, 'User not found.');
 
 	const form = await superValidate(JSON.parse(JSON.stringify(editUser)), accountSchema);
 	return { form };
@@ -36,14 +38,13 @@ export const actions = {
 		}
 
 		try {
-			await db.authUser.update({
+			await db.user.update({
 				where: {
 					id: form.data.id
 				},
 				data: {
 					name: form.data.name,
-					email: form.data.email,
-					phone: form.data.phone
+					email: form.data.email
 				}
 			});
 		} catch (e) {

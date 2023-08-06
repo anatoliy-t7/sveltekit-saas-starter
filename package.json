@@ -52,6 +52,7 @@
 	"dependencies": {
 		"@lucia-auth/adapter-prisma": "^3.0.0",
 		"lucia": "^2.0.0",
+		"prisma-extension-pagination": "^0.4.2",
 		"slugify": "^1.6.6"
 	}
 }

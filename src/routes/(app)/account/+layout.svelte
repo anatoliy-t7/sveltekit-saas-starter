@@ -10,10 +10,6 @@
 				<ul>
 					<li>
 						<a href="/account" class="{classesActive('/account')} ">Account</a>
-						<a href="/account/addresses" class={classesActive('/account/addresses')}>Addresses</a>
-						<a href="/account/orders" class={classesActive('/account/orders')}>Orders</a>
-						<a href="/account/favourites" class={classesActive('/account/favourites')}>Favourites</a
-						>
 					</li>
 				</ul>
 			</nav>

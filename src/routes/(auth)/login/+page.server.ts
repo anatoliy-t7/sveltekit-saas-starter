@@ -58,8 +58,10 @@ export const actions: Actions = {
 						password: form.data.password // hashed by Lucia
 					},
 					attributes: {
+						name: null,
 						email: form.data.email.toLowerCase(),
-						email_verified: false
+						email_verified: false,
+						role: 'client'
 					}
 				});
 			} catch (e) {

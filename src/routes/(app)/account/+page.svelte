@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-	import Helper from '$lib/components/Helper.svelte';
+	import Error from '$lib/components/Error.svelte';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	export let data;
@@ -16,8 +16,6 @@
 </svelte:head>
 
 <main class="px-4 max-w-screen-xl mx-auto space-y-2">
-	<h4>My account</h4>
-
 	<form method="POST" action="?/save" use:enhance>
 		<input type="hidden" name="id" value={$form.id} />
 		<div class="space-y-4 max-w-xs">
@@ -34,7 +32,7 @@
 					{...$constraints.name}
 				/>
 				{#if $errors.name}
-					<Helper>{$errors.name}</Helper>
+					<Error>{$errors.name}</Error>
 				{/if}
 			</label>
 
@@ -52,24 +50,7 @@
 					{...$constraints.email}
 				/>
 				{#if $errors.email}
-					<Helper>{$errors.email}</Helper>
-				{/if}
-			</label>
-
-			<label class="label">
-				<span>Phone</span>
-				<input
-					class="input"
-					id="phone"
-					name="phone"
-					type="tel"
-					placeholder="Phone"
-					bind:value={$form.phone}
-					aria-invalid={$errors.phone ? 'true' : undefined}
-					{...$constraints.phone}
-				/>
-				{#if $errors.phone}
-					<Helper>{$errors.phone}</Helper>
+					<Error>{$errors.email}</Error>
 				{/if}
 			</label>
 

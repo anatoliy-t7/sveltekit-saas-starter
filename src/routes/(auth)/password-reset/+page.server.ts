@@ -39,8 +39,6 @@ export const actions = {
 				success: true
 			};
 		} catch (e) {
-			console.log(e);
-
 			return fail(500, {
 				message: 'An unknown error occurred',
 				email
