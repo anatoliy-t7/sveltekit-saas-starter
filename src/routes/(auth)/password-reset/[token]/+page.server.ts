@@ -1,9 +1,12 @@
-import { auth, passwordResetToken } from '$lib/server/lucia';
+import { auth } from '$lib/server/lucia';
+import { validatePasswordResetToken } from '$lib/server/token';
+import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 
-export const actions = {
-	default: async ({ request, locals, params }) => {
-		const formData = await request.formData();
+export const actions: Actions = {
+	default: async (event) => {
+		const authRequest = auth.handleRequest(event);
+		const formData = await event.request.formData();
 		const password = formData.get('new-password');
 		if (password instanceof File || password === null || password.length < 8) {
 			return fail(400, {
@@ -11,20 +14,27 @@ export const actions = {
 			});
 		}
 		try {
-			const token = await passwordResetToken.validate(params.token ?? '');
-			let user = await auth.getUser(token.userId);
-			if (!user.email_verified) {
-				user = await auth.updateUserAttributes(user.id, {
+			const userId = await validatePasswordResetToken(event.params.token ?? '');
+			let user = await auth.getUser(userId);
+
+			await auth.invalidateAllUserSessions(user.userId);
+			await auth.updateKeyPassword('email', user.email, password);
+
+			if (!user.emailVerified) {
+				user = await auth.updateUserAttributes(user.userId, {
 					email_verified: true
 				});
 			}
-			await auth.invalidateAllUserSessions(user.id);
-			await auth.updateKeyPassword('email', user.email, password);
-			const session = await auth.createSession(user.id);
-			locals.auth.setSession(session);
+
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {}
+			});
+
+			authRequest.setSession(session);
 		} catch (e) {
 			return fail(400, {
-				message: 'An unknown error occurred'
+				message: 'Invalid or expired password reset link'
 			});
 		}
 

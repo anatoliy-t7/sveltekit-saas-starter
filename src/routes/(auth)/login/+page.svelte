@@ -3,7 +3,9 @@
 	import { page } from '$app/stores';
 	import { superForm } from 'sveltekit-superforms/client';
 	export let data: PageData;
-	const { form, errors, enhance } = superForm(data.form);
+	const { form, errors, enhance } = superForm(data.form, {
+		taintedMessage: null
+	});
 
 	let message = 'You must be logged in to access this page';
 	$: hasRedirect = $page.url.searchParams.get('redirectTo') ? true : false;

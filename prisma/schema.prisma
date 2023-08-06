@@ -22,6 +22,7 @@ model User {
     auth_session Session[]
     auth_key     Key[]
     email_verification_token EmailVerificationToken[]
+    password_reset_token PasswordResetToken[]
 
     @@map("user")
 }
@@ -55,4 +56,14 @@ model EmailVerificationToken {
 
     @@index([user_id])
     @@map("email_verification_token")
+}
+
+model PasswordResetToken {
+    id             String @id @unique
+    expires        BigInt
+    user_id        String
+    user           User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+    @@index([user_id])
+    @@map("password_reset_token")
 }

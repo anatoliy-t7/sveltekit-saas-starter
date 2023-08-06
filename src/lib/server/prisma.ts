@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import slugify from 'slugify';
 
-const db = new PrismaClient();
+const db = new PrismaClient({
+	errorFormat: 'pretty'
+});
 
 const getSlug = async (name: any, collectionName: string) => {
 	const collection = db[collectionName];

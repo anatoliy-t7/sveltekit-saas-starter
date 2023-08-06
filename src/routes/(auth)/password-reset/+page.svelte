@@ -25,7 +25,7 @@
 			<button type="submit" class="btn variant-filled-primary w-full"> Send email </button>
 		</form>
 		{#if form?.message}
-			<p class="pt-2 text-red-600">{form.message}</p>
+			<p class="pt-2 text-sm text-red-600">{form.message}</p>
 		{/if}
 		{#if form?.success}
 			<p class="pt-2 text-lime-600">A verification email was sent to your inbox</p>
