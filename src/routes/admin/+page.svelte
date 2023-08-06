@@ -6,7 +6,7 @@
 	<title>Dashboard</title>
 </svelte:head>
 
-<main class="h-full overflow-y-auto">
+<main>
 	<div class="container px-6 mx-auto grid">
 		<h3>Dashboard</h3>
 	</div>

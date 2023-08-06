@@ -43,12 +43,12 @@
 				<a
 					class="{activeUrl.pathname.startsWith(link.url)
 						? ''
-						: ''} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-primary-800 dark:hover:text-primary-200 !no-underline"
+						: ''} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-primary-800 dark:hover:text-primary-200 unstyled"
 					href={link.url}
 					on:click={drawerClose}
 				>
 					{#if link.icon}
-						<svelte:component this={link.icon} />
+						<svelte:component this={link.icon} class="w-6 h-6" />
 					{/if}
 					<span class="ml-4">{link.name}</span>
 				</a>

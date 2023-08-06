@@ -23,7 +23,7 @@
 	{/if}
 </svelte:head>
 
-<main class="h-full overflow-y-auto">
+<main>
 	<div class="max-w-screen-md flex gap-6 items-center">
 		<a href="/admin/users" class="hover p-1">
 			<IconChevronLeft class="dark:text-primary-100" />
