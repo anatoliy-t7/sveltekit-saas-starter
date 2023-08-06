@@ -1,10 +1,10 @@
-# Sveltekit SaaS starter
+# SvelteKit SaaS starter
 
 ## Stack
 
-- [Sveltekit](https://kit.svelte.dev)
-- [Svelte](https://svelte.dev)
-- [Tailwind](https://tailwindcss.com)
+- [SvelteKit (JS)](https://kit.svelte.dev)
+- [Svelte (JS)](https://svelte.dev)
+- [Tailwind (CSS)](https://tailwindcss.com)
 - [Prisma (ORM)](https://www.prisma.io)
 
 ## Packages included
