@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_APP_NAME } from '$env/static/public';
+	import { PUBLIC_APP_NAME, PUBLIC_DOMAIN } from '$env/static/public';
 </script>
 
 <svelte:head>
@@ -19,23 +19,23 @@
 			<div><br /></div>
 			<div>
 				<div>
-					We are localhost ('<strong>Company</strong>', '<strong>we</strong>', '<strong>us</strong
-					>', or '<strong>our</strong>'), a company registered in France at pyrenees, pyrenees,
-					pyrenees 123456. Our VAT number is gb9999999999.
+					We are {PUBLIC_APP_NAME} ('<strong>Company</strong>', '<strong>we</strong>', '<strong
+						>us</strong
+					>', or '<strong>our</strong>'), a company registered in , pyrenees 123456. Our VAT number
+					is gb9999999999.
 				</div>
 			</div>
 			<div><br /></div>
 			<div>
 				<div>
-					We operate the website https://localhost (the '<strong>Site</strong>'), as well as any
-					other related products and services that refer or link to these legal terms (the '<strong
+					We operate the website {PUBLIC_DOMAIN} (the '<strong>Site</strong>'), as well as any other
+					related products and services that refer or link to these legal terms (the '<strong
 						>Legal Terms</strong
 					>') (collectively, the '<strong>Services</strong>').
 				</div>
 				<div><br /></div>
 				<div>
-					You can contact us by phone at 123456789, email at localhost@gmail.com, or by mail to
-					pyrenees, pyrenees, pyrenees 123456,&nbsp;France.
+					You can contact us by phone at 123456789, email at localhost@gmail.com, or by mail to .
 				</div>
 				<div><br /></div>
 				<div>
@@ -605,7 +605,7 @@
 			<div><br /></div>
 			<div>
 				We care about data privacy and security. Please review our Privacy Policy:<strong
-					>&nbsp;https://localhost/privacy-policy</strong
+					>&nbsp;{PUBLIC_DOMAIN}/privacy-policy</strong
 				>. By using the Services, you agree to be bound by our Privacy Policy, which is incorporated
 				into these Legal Terms. Please be advised the Services are hosted in Germany. If you access
 				the Services from any other region of the world with laws or other requirements governing
@@ -874,10 +874,7 @@
 				regarding use of the Services, please contact us at:
 			</div>
 			<div><br /></div>
-			<div><strong>localhost</strong></div>
-			<div><strong>pyrenees</strong></div>
-			<div><strong>pyrenees, pyrenees 123456</strong></div>
-			<div><strong>France</strong></div>
+			<div><strong>{PUBLIC_APP_NAME}</strong></div>
 			<div><strong><strong>Phone: 123456789</strong></strong></div>
 			<div><strong><strong>localhost@gmail.com</strong></strong></div>
 		</div>
