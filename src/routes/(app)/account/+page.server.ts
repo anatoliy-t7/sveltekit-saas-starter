@@ -3,6 +3,7 @@ import { db } from '$lib/server/prisma';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { userSchema } from '$lib/zod';
 import { auth } from '$lib/server/lucia';
+import { stripe } from '$lib/server/stripe';
 
 const accountSchema = userSchema.pick({
 	id: true,
@@ -26,7 +27,21 @@ export const load = async (event) => {
 	if (session?.user?.userId && !editUser) throw error(404, 'User not found.');
 
 	const form = await superValidate(JSON.parse(JSON.stringify(editUser)), accountSchema);
-	return { form };
+
+	const customers = await stripe.customers.list({
+		email: session?.user.email
+	});
+
+	let subIsActive = false;
+	if (customers?.data?.length) {
+		const subscriptions = await stripe.subscriptions.list({
+			customer: customers?.data[0].customer
+		});
+
+		subIsActive = subscriptions?.data?.find((s) => s.status === 'active') ? true : false;
+	}
+
+	return { form, subIsActive };
 };
 
 export const actions = {

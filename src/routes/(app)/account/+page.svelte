@@ -63,4 +63,8 @@
 	<div>
 		<a href="/password-reset">Reset password</a>
 	</div>
+
+	<div>
+		Your subscription is {data.subIsActive ? 'Active' : 'Not active'}
+	</div>
 </main>
