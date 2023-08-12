@@ -1,4 +1,5 @@
 <script>
+	// @ts-nocheck
 	import IconUserCircle from '~icons/tabler/user-circle';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -60,6 +61,14 @@
 				<ul
 					class="md:items-center border-primary-100 bg-primary-50 md:flex-row md:space-x-8 md:border-0 md:bg-white dark:bg-primary-800 md:dark:bg-primary-900 dark:border-primary-700 flex flex-col p-4 border rounded-lg"
 				>
+					<li>
+						<a
+							href="/prices"
+							class="permalink text-primary-700 hover:bg-primary-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-primary-400 md:dark:hover:text-white dark:hover:bg-primary-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
+							>Prices</a
+						>
+					</li>
+
 					{#if !data.user}
 						<li>
 							<a
