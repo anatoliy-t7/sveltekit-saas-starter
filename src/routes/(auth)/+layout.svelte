@@ -6,7 +6,7 @@
 	<div class="lg:w-6/12 relative flex items-center justify-center w-full min-h-screen bg-white">
 		<div class="flex justify-center flex-col px-4 space-y-6">
 			<a href="/" class="flex items-center justify-center">
-				<Logo class="h-6 sm:h-9" />
+				<Logo />
 			</a>
 
 			<slot />

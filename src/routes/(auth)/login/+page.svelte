@@ -4,7 +4,8 @@
 	import Pincode from '$lib/components/Pincode.svelte';
 	import PincodeInput from '$lib/components/PincodeInput.svelte';
 	import Error from '$lib/components/Error.svelte';
-
+	import IconBrandFacebook from '~icons/tabler/brand-facebook';
+	import IconBrandGoogle from '~icons/tabler/brand-google';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	export let data;
 
@@ -12,6 +13,7 @@
 	let code: string[] = [];
 	let value = '';
 	let formOtp: HTMLFormElement;
+	let sending = false;
 
 	const { form, errors, enhance } = superForm(data.emailForm, {
 		taintedMessage: null,
@@ -35,6 +37,10 @@
 
 	$: if ($otpMessage) {
 		toastStore.trigger($otpMessage);
+	}
+
+	$: if ($otpErrors.otp) {
+		sending = false;
 	}
 </script>
 
@@ -64,6 +70,7 @@
 					on:complete={(e) => {
 						$otpForm.otp = e.detail.value;
 						$otpForm.email = $form.email;
+						sending = true;
 						setTimeout(() => {
 							formOtp.dispatchEvent(new Event('submit', { bubbles: true }));
 						}, 50);
@@ -86,11 +93,15 @@
 
 			<div class="flex justify-center px-2">
 				<button
-					disabled={value.length != 6}
+					disabled={value.length != 6 || sending}
 					type="submit"
 					class="btn variant-filled-primary w-full"
 				>
-					Send
+					{#if sending}
+						Sending
+					{:else}
+						Send
+					{/if}
 				</button>
 			</div>
 		</form>
@@ -125,7 +136,7 @@
 					<div class="w-full border-t border-gray-200"></div>
 				</div>
 				<div class="relative flex justify-center text-sm font-medium leading-6">
-					<span class="bg-white px-6 text-gray-900">Or</span>
+					<span class="bg-white px-6 text-gray-900">or continue with</span>
 				</div>
 			</div>
 
@@ -134,54 +145,51 @@
 					href="/login/google"
 					aria-label="Continue with google"
 					role="button"
-					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 flex items-center"
+					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 block zoom-click"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						xmlns:xlink="http://www.w3.org/1999/xlink"
-						viewBox="0 0 48 48"
-						class="w-6 h-6"
-					>
-						<defs>
+					<div class="flex items-center gap-2 pl-20">
+						<svg class="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
 							<path
-								id="a"
-								d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"
+								fill="#FFC107"
+								d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C12.955 4 4 12.955 4 24s8.955 20 20 20s20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"
 							/>
-						</defs>
-						<clipPath id="b"><use xlink:href="#a" overflow="visible" /></clipPath>
-						<path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z" />
-						<path clip-path="url(#b)" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z" />
-						<path clip-path="url(#b)" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z" />
-						<path clip-path="url(#b)" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z" />
-					</svg>
-					<p class="text-base font-medium ml-4 text-gray-700">Continue with Google</p>
+							<path
+								fill="#FF3D00"
+								d="m6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4C16.318 4 9.656 8.337 6.306 14.691z"
+							/>
+							<path
+								fill="#4CAF50"
+								d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0 1 24 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"
+							/>
+							<path
+								fill="#1976D2"
+								d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"
+							/>
+						</svg>
+						<p class="text-base font-medium text-gray-700">Google</p>
+					</div>
 				</a>
 
 				<a
 					href="/login/facebook"
 					aria-label="Continue with facebook"
 					role="button"
-					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 flex items-center"
+					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 block zoom-click"
 				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						xmlns:xlink="http://www.w3.org/1999/xlink"
-						viewBox="0 0 48 48"
-						class="w-6 h-6"
-					>
-						<defs>
+					<div class="flex items-center gap-2 pl-20">
+						<svg class="w-6 h-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
 							<path
-								id="a"
-								d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"
+								fill="#1877F2"
+								d="M256 128C256 57.308 198.692 0 128 0C57.308 0 0 57.307 0 128c0 63.888 46.808 116.843 108 126.445V165H75.5v-37H108V99.8c0-32.08 19.11-49.8 48.347-49.8C170.352 50 185 52.5 185 52.5V84h-16.14C152.958 84 148 93.867 148 103.99V128h35.5l-5.675 37H148v89.445c61.192-9.602 108-62.556 108-126.445"
 							/>
-						</defs>
-						<clipPath id="b"><use xlink:href="#a" overflow="visible" /></clipPath>
-						<path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z" />
-						<path clip-path="url(#b)" fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z" />
-						<path clip-path="url(#b)" fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z" />
-						<path clip-path="url(#b)" fill="#4285F4" d="M48 48L17 24l-4-3 35-10z" />
-					</svg>
-					<p class="text-base font-medium ml-4 text-gray-700">Continue with Facebook</p>
+							<path
+								fill="#FFF"
+								d="m177.825 165l5.675-37H148v-24.01C148 93.866 152.959 84 168.86 84H185V52.5S170.352 50 156.347 50C127.11 50 108 67.72 108 99.8V128H75.5v37H108v89.445A128.959 128.959 0 0 0 128 256a128.9 128.9 0 0 0 20-1.555V165h29.825"
+							/>
+						</svg>
+
+						<p class="text-base font-medium text-gray-700">Facebook</p>
+					</div>
 				</a>
 			</div>
 		</div>

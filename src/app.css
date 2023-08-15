@@ -5,10 +5,12 @@ body {
 	@apply w-full h-full relative grid bg-white;
 }
 
-button {
+button,
+.zoom-click {
 	@apply transition duration-300;
 }
-button:active {
+button:active,
+.zoom-click:active {
 	@apply scale-95;
 }
 button svg {
@@ -49,7 +51,7 @@ table tr td {
 .radio,
 .select,
 .textarea {
-	@apply bg-primary-50 dark:bg-surface-800 border-primary-300 placeholder:text-surface-200 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
+	@apply bg-slate-50 dark:bg-surface-800 border-slate-300 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
 }
 
 .table {

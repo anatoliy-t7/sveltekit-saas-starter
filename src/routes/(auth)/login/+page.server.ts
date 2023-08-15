@@ -84,6 +84,7 @@ export const actions: Actions = {
 			}
 		});
 
+		// TODO https://lucia-auth.com/guidebook/email-verification-codes
 		const verificationTimeout = new Map<
 			string,
 			{
