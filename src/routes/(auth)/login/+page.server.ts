@@ -1,90 +1,147 @@
 import { auth } from '$lib/server/lucia';
-import { fail, redirect } from '@sveltejs/kit';
+import { generateRandomString, isWithinExpiration } from 'lucia/utils';
+import { fail, json, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { superValidate, setError } from 'sveltekit-superforms/server';
-import { userSchema } from '$lib/zod';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { userSchema, otpSchema } from '$lib/zod';
 import { db } from '$lib/server/prisma';
-import { LuciaError } from 'lucia';
-import { generateEmailVerificationToken } from '$lib/server/token';
 import { sendEmail } from '$lib/server/utils';
-import { PUBLIC_DOMAIN } from '$env/static/public';
+
+const emailSchema = userSchema.pick({
+	email: true
+});
+
+let email: string;
 
 export const load: PageServerLoad = async (event) => {
 	const authRequest = auth.handleRequest(event);
 	const session = await authRequest.validate();
 	if (session) throw redirect(302, '/');
 
-	const form = await superValidate(userSchema);
-	return { form };
+	const emailForm = await superValidate(emailSchema);
+	const otpForm = await superValidate(otpSchema);
+	return { emailForm, otpForm, email };
 };
 
 export const actions: Actions = {
-	default: async (event) => {
-		const authRequest = auth.handleRequest(event);
+	sendOtp: async (event) => {
+		const emailForm = await superValidate(event.request, emailSchema);
 
-		const form = await superValidate(event.request, userSchema);
+		if (!emailForm.valid) return fail(400, { emailForm });
 
-		if (!form.valid) return fail(400, { form });
-
-		const checkUser = await db.user.findUnique({
+		let user = await db.user.findUnique({
 			where: {
-				email: form.data.email
+				email: emailForm.data.email
 			}
 		});
 
-		let user;
+		const code = generateRandomString(6, '0123456789');
 
-		if (checkUser) {
-			try {
-				user = await auth.useKey('email', form.data.email, form.data.password);
-			} catch (e) {
-				if (
-					e instanceof LuciaError &&
-					(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
-				) {
-					return setError(form, 'password', 'Invalid password');
+		if (!user) {
+			user = await auth.createUser({
+				key: {
+					providerId: 'otp', // auth method
+					providerUserId: emailForm.data.email.toLowerCase(),
+					password: null
+				},
+				attributes: {
+					email: emailForm.data.email.toLowerCase(),
+					email_verified: false,
+					active: false
 				}
-
-				return fail(500, {
-					message: 'An unknown error occurred'
-				});
-			}
-		} else {
-			try {
-				user = await auth.createUser({
-					key: {
-						providerId: 'email', // auth method
-						providerUserId: form.data.email.toLowerCase(), // unique id when using "username" auth method
-						password: form.data.password // hashed by Lucia
-					},
-					attributes: {
-						name: null,
-						email: form.data.email.toLowerCase(),
-						email_verified: false,
-						role: 'client'
-					}
-				});
-			} catch (e) {
-				return fail(500, {
-					message: 'An unknown error occurred'
-				});
-			}
+			});
 		}
 
-		if (!checkUser || !checkUser?.email_verified) {
-			const token = await generateEmailVerificationToken(user.userId);
+		await db.$transaction(async (trx) => {
+			await trx.verificationCode.deleteMany({
+				where: {
+					user_id: user?.id
+				}
+			});
 
-			// url to verify tokens
-			const url = `${PUBLIC_DOMAIN}/email-verification?token=${token}`;
-			sendEmail(user.providerUserId, 'Verify email', 'verify-email', url);
-		}
-
-		const session = await auth.createSession({
-			userId: user.userId,
-			attributes: {}
+			await db.verificationCode.create({
+				data: {
+					code: code,
+					expires: new Date().getTime() + 300,
+					user_id: user?.id
+				}
+			});
 		});
-		authRequest.setSession(session);
 
-		throw redirect(302, '/');
+		sendEmail(user.email, 'Sign in OTP', 'send-otp', code);
+
+		return { emailForm };
+	},
+
+	checkOtp: async (event) => {
+		const otpForm = await superValidate(event.request, otpSchema);
+
+		if (!otpForm.valid) return fail(400, { otpForm });
+
+		let user = await db.user.findUnique({
+			where: {
+				email: otpForm.data.email
+			}
+		});
+
+		const verificationTimeout = new Map<
+			string,
+			{
+				timeoutUntil: number;
+				timeoutSeconds: number;
+			}
+		>();
+
+		if (user) {
+			const storedTimeout = verificationTimeout.get(user.id) ?? null;
+
+			if (!storedTimeout) {
+				// first attempt - setup throttling
+				verificationTimeout.set(user.id, {
+					timeoutUntil: Date.now(),
+					timeoutSeconds: 1
+				});
+			} else {
+				// subsequent attempts
+				if (!isWithinExpiration(storedTimeout.timeoutUntil)) {
+					return message(otpForm, { message: 'Too many requests' });
+				}
+				const timeoutSeconds = storedTimeout.timeoutSeconds * 2;
+				verificationTimeout.set(user.id, {
+					timeoutUntil: Date.now() + timeoutSeconds * 1000,
+					timeoutSeconds
+				});
+			}
+
+			let result = await db.verificationCode.findFirst({
+				where: {
+					user_id: user.id,
+					code: otpForm.data.otp
+				}
+			});
+
+			if (!result) {
+				return setError(otpForm, 'otp', 'Invalid verification code');
+			}
+
+			await db.user.update({
+				where: {
+					id: user.id
+				},
+				data: {
+					active: true
+				}
+			});
+
+			const session = await auth.createSession({
+				userId: user.id,
+				attributes: {}
+			});
+			event.locals.auth.setSession(session);
+
+			throw redirect(303, '/');
+		} else {
+			return message(otpForm, { message: 'User not found' });
+		}
 	}
 };

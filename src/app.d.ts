@@ -9,6 +9,8 @@ declare global {
 			email: string;
 			email_verified: boolean;
 			role: string;
+			avatar: string?;
+			active: boolean?;
 		};
 		type DatabaseSessionAttributes = {};
 	}

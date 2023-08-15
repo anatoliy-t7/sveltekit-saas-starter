@@ -1,5 +1,6 @@
 import { render } from 'svelte-email';
 import VerifyEmail from '$lib/components/emails/VerifyEmail.svelte';
+import SendOtp from '$lib/components/emails/SendOtp.svelte';
 import ResetPassword from '$lib/components/emails/ResetPassword.svelte';
 import nodemailer from 'nodemailer';
 import { PUBLIC_APP_NAME, PUBLIC_EMAIL } from '$env/static/public';
@@ -29,6 +30,15 @@ export async function sendEmail(email: string, subject: string, template: string
 			template: ResetPassword,
 			props: {
 				link: prop
+			}
+		});
+	}
+
+	if (template == 'send-otp') {
+		emailHtml = render({
+			template: SendOtp,
+			props: {
+				otp: prop
 			}
 		});
 	}

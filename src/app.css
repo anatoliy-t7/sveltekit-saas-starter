@@ -34,17 +34,23 @@ button svg {
 	@apply z-0 scale-100 opacity-100;
 }
 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 table tr td {
 	@apply font-normal align-middle !important;
 }
 
-/* .input,
+.input,
 .checkbox,
 .radio,
 .select,
 .textarea {
 	@apply bg-primary-50 dark:bg-surface-800 border-primary-300 placeholder:text-surface-200 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
-} */
+}
 
 .table {
 	@apply bg-primary-50;

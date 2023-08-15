@@ -15,14 +15,16 @@ model User {
     id          String   @id @unique
     name        String?
     email       String   @unique
+    avatar      String?
     role        String   @default("client")
     email_verified Boolean @default(false)
     active      Boolean @default(true)
-
     auth_session Session[]
     auth_key     Key[]
+
     email_verification_token EmailVerificationToken[]
     password_reset_token PasswordResetToken[]
+    verification_code VerificationCode[]
 
     @@map("user")
 }
@@ -48,6 +50,7 @@ model Key {
     @@map("auth_key")
 }
 
+
 model EmailVerificationToken {
     id             String @id @unique
     expires        BigInt
@@ -66,4 +69,15 @@ model PasswordResetToken {
 
     @@index([user_id])
     @@map("password_reset_token")
+}
+
+model VerificationCode {
+    id             Int @id @default(autoincrement())
+    expires        BigInt
+    code           String
+    user_id        String
+    user           User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+    @@index([user_id])
+    @@map("verification_code")
 }
