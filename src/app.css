@@ -51,7 +51,7 @@ table tr td {
 .radio,
 .select,
 .textarea {
-	@apply bg-slate-50 dark:bg-surface-800 border-slate-300 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
+	@apply bg-slate-50 dark:bg-surface-800 border-slate-400 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
 }
 
 .table {

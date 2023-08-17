@@ -22,8 +22,6 @@ model User {
     auth_session Session[]
     auth_key     Key[]
 
-    email_verification_token EmailVerificationToken[]
-    password_reset_token PasswordResetToken[]
     verification_code VerificationCode[]
 
     @@map("user")
@@ -51,32 +49,13 @@ model Key {
 }
 
 
-model EmailVerificationToken {
-    id             String @id @unique
-    expires        BigInt
-    user_id        String
-    user           User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-    @@index([user_id])
-    @@map("email_verification_token")
-}
-
-model PasswordResetToken {
-    id             String @id @unique
-    expires        BigInt
-    user_id        String
-    user           User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-    @@index([user_id])
-    @@map("password_reset_token")
-}
-
 model VerificationCode {
-    id             Int @id @default(autoincrement())
+    id             Int      @id @default(autoincrement())
     expires        BigInt
     code           String
     user_id        String
-    user           User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+    attempts       Int      @default(3)
+    user           User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
     @@index([user_id])
     @@map("verification_code")

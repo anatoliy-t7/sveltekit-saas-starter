@@ -4,12 +4,11 @@
 	import Pincode from '$lib/components/Pincode.svelte';
 	import PincodeInput from '$lib/components/PincodeInput.svelte';
 	import Error from '$lib/components/Error.svelte';
-	import IconBrandFacebook from '~icons/tabler/brand-facebook';
-	import IconBrandGoogle from '~icons/tabler/brand-google';
 	import { toastStore } from '@skeletonlabs/skeleton';
+	import { slide } from 'svelte/transition';
 	export let data;
 
-	let otpSent = false;
+	let otpView = false;
 	let code: string[] = [];
 	let value = '';
 	let formOtp: HTMLFormElement;
@@ -18,7 +17,7 @@
 	const { form, errors, enhance } = superForm(data.emailForm, {
 		taintedMessage: null,
 		onResult: ({ result }) => {
-			otpSent = true;
+			otpView = true;
 			message = '';
 		}
 	});
@@ -39,8 +38,18 @@
 		toastStore.trigger($otpMessage);
 	}
 
+	// $: if (value.length < 6) {
+	// 	$otpErrors.otp = null;
+	// }
+
 	$: if ($otpErrors.otp) {
 		sending = false;
+	}
+
+	$: if ($otpErrors.email) {
+		otpView = false;
+		code = [];
+		value = '';
 	}
 </script>
 
@@ -50,66 +59,69 @@
 	{/if}
 
 	<div class="text-center pb-6">
-		<h2 class="text-2xl font-bold tracking-tight text-primary-900 unstyled">Sign In / Register</h2>
+		<h2 class="text-2xl font-medium text-slate-900 unstyled">Sign In / Register</h2>
 	</div>
 
-	{#if otpSent}
-		<form bind:this={formOtp} method="POST" action="?/checkOtp" use:otpEnhance class="space-y-6">
-			<p class="text-slate-800 text-sm text-center">
-				We sent a 6 digit code to your
-				<strong class="font-semibold">email address</strong>. Please enter the code in order sign
-				in.
-			</p>
-			<div class="flex justify-center">
-				<input type="hidden" name="otp" bind:value={$otpForm.otp} />
-				<input type="hidden" name="email" bind:value={$otpForm.email} />
-				<Pincode
-					type="numeric"
-					bind:code
-					bind:value
-					on:complete={(e) => {
-						$otpForm.otp = e.detail.value;
-						$otpForm.email = $form.email;
-						sending = true;
-						setTimeout(() => {
-							formOtp.dispatchEvent(new Event('submit', { bubbles: true }));
-						}, 50);
-					}}
-				>
-					<PincodeInput />
-					<PincodeInput />
-					<PincodeInput class="mr-4" />
-					<PincodeInput />
-					<PincodeInput />
-					<PincodeInput />
-				</Pincode>
-			</div>
-
-			{#if $otpErrors.otp}
-				<div class="text-center">
-					<Error>{$otpErrors.otp}</Error>
-				</div>
-			{/if}
-
-			<div class="flex justify-center px-2">
-				<button
-					disabled={value.length != 6 || sending}
-					type="submit"
-					class="btn variant-filled-primary w-full"
-				>
-					{#if sending}
-						Sending
+	{#if otpView}
+		<div transition:slide>
+			<form bind:this={formOtp} method="POST" action="?/checkOtp" use:otpEnhance class="space-y-6">
+				<div class="text-slate-500 text-sm text-center">
+					{#if $otpErrors.otp}
+						<Error>{$otpErrors.otp}</Error>
 					{:else}
-						Send
+						<div>
+							We sent a 6 digit code to your
+							<strong class="font-semibold">email address</strong>.
+						</div>
 					{/if}
-				</button>
-			</div>
-		</form>
+
+					Please enter the code in order sign in.
+				</div>
+				<div class="flex justify-center">
+					<input type="hidden" name="otp" bind:value={$otpForm.otp} />
+					<input type="hidden" name="email" bind:value={$otpForm.email} />
+					<Pincode
+						type="numeric"
+						bind:code
+						bind:value
+						on:complete={(e) => {
+							$otpForm.otp = e.detail.value;
+							$otpForm.email = $form.email;
+							sending = true;
+							setTimeout(() => {
+								formOtp.dispatchEvent(new Event('submit', { bubbles: true }));
+							}, 50);
+						}}
+					>
+						<PincodeInput />
+						<PincodeInput />
+						<PincodeInput class="mr-4" />
+						<PincodeInput />
+						<PincodeInput />
+						<PincodeInput />
+					</Pincode>
+				</div>
+
+				<div class="flex justify-center px-2">
+					<button
+						disabled={value.length != 6 || sending}
+						type="submit"
+						class="btn variant-filled-primary w-full"
+					>
+						{#if sending}
+							Verifying
+						{:else}
+							Verify
+						{/if}
+					</button>
+				</div>
+			</form>
+		</div>
 	{:else}
-		<div>
+		<div transition:slide>
 			<form method="POST" action="?/sendOtp" class="space-y-4" use:enhance>
 				<label for="email" class="label">
-					<span>Sign In via OTP on Email</span>
+					<span class="text-sm">Sign In via OTP on Email</span>
 					<input
 						bind:value={$form.email}
 						aria-invalid={$errors.email ? 'true' : undefined}
@@ -121,6 +133,11 @@
 						placeholder="Email address"
 						required
 					/>
+					{#if $otpErrors.email}
+						<div class="text-center">
+							<Error>{$otpErrors.email}</Error>
+						</div>
+					{/if}
 					{#if $errors.email}
 						<span class="text-sm text-red-600">
 							{$errors.email}
@@ -133,10 +150,10 @@
 
 			<div class="relative py-6">
 				<div class="absolute inset-0 flex items-center" aria-hidden="true">
-					<div class="w-full border-t border-gray-200"></div>
+					<div class="w-full border-t border-gray-400"></div>
 				</div>
-				<div class="relative flex justify-center text-sm font-medium leading-6">
-					<span class="bg-white px-6 text-gray-900">or continue with</span>
+				<div class="relative flex justify-center">
+					<span class="bg-white px-6 text-slate-500 uppercase text-sm">or continue with</span>
 				</div>
 			</div>
 
@@ -145,9 +162,9 @@
 					href="/login/google"
 					aria-label="Continue with google"
 					role="button"
-					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 block zoom-click"
+					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"
 				>
-					<div class="flex items-center gap-2 pl-20">
+					<div class="flex items-center gap-2 pl-24">
 						<svg class="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
 							<path
 								fill="#FFC107"
@@ -174,10 +191,10 @@
 					href="/login/facebook"
 					aria-label="Continue with facebook"
 					role="button"
-					class="hover:bg-slate-50 py-3 px-4 border rounded-lg border-gray-700 block zoom-click"
+					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"
 				>
-					<div class="flex items-center gap-2 pl-20">
-						<svg class="w-6 h-6" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+					<div class="flex items-center gap-2 pl-24">
+						<svg class="w-5 h-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
 							<path
 								fill="#1877F2"
 								d="M256 128C256 57.308 198.692 0 128 0C57.308 0 0 57.307 0 128c0 63.888 46.808 116.843 108 126.445V165H75.5v-37H108V99.8c0-32.08 19.11-49.8 48.347-49.8C170.352 50 185 52.5 185 52.5V84h-16.14C152.958 84 148 93.867 148 103.99V128h35.5l-5.675 37H148v89.445c61.192-9.602 108-62.556 108-126.445"
@@ -194,6 +211,16 @@
 			</div>
 		</div>
 	{/if}
+
+	<div class="text-xs text-slate-500 text-center">
+		By clicking continue, you agree to our <a
+			href="/terms-conditions"
+			class="underline hover:text-slate-600">Terms of Service</a
+		>
+		and
+		<a href="/privacy-policy" class="underline hover:text-slate-600">Privacy Policy</a>
+		.
+	</div>
 </div>
 
 <style>

@@ -84,55 +84,35 @@ export const actions: Actions = {
 			}
 		});
 
-		// TODO https://lucia-auth.com/guidebook/email-verification-codes
-		const verificationTimeout = new Map<
-			string,
-			{
-				timeoutUntil: number;
-				timeoutSeconds: number;
-			}
-		>();
-
 		if (user) {
-			const storedTimeout = verificationTimeout.get(user.id) ?? null;
+			// return message(otpForm, { message: 'Too many requests' });
 
-			if (!storedTimeout) {
-				// first attempt - setup throttling
-				verificationTimeout.set(user.id, {
-					timeoutUntil: Date.now(),
-					timeoutSeconds: 1
-				});
-			} else {
-				// subsequent attempts
-				if (!isWithinExpiration(storedTimeout.timeoutUntil)) {
-					return message(otpForm, { message: 'Too many requests' });
-				}
-				const timeoutSeconds = storedTimeout.timeoutSeconds * 2;
-				verificationTimeout.set(user.id, {
-					timeoutUntil: Date.now() + timeoutSeconds * 1000,
-					timeoutSeconds
-				});
-			}
-
-			let result = await db.verificationCode.findFirst({
+			let verify = await db.verificationCode.findFirst({
 				where: {
-					user_id: user.id,
-					code: otpForm.data.otp
+					user_id: user.id
 				}
 			});
 
-			if (!result) {
+			if (verify?.code !== otpForm.data.otp) {
+				verify = await db.verificationCode.update({
+					where: {
+						id: verify?.id
+					},
+					data: {
+						attempts: {
+							decrement: 1
+						}
+					}
+				});
+
+				console.log('verify.attempts', verify.attempts);
+
+				if (verify.attempts <= 0) {
+					return setError(otpForm, 'email', 'Attempts exhausted, try to enter new OTP');
+				}
+
 				return setError(otpForm, 'otp', 'Invalid verification code');
 			}
-
-			await db.user.update({
-				where: {
-					id: user.id
-				},
-				data: {
-					active: true
-				}
-			});
 
 			const session = await auth.createSession({
 				userId: user.id,
