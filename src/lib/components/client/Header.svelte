@@ -51,7 +51,7 @@
 
 <svelte:window bind:scrollY={y} />
 <div use:action class="{headerClass} fixed w-full top-0 transition-all z-50">
-	<nav class="dark:bg-primary-900 border-primary-100 bg-white border-b">
+	<nav class="dark:bg-slate-900 border-slate-100 bg-white border-b">
 		<div class="flex items-center justify-between max-w-screen-xl px-4 mx-auto">
 			<a href="/" class="flex items-center">
 				<Logo class="sm:h-9 h-6" />
@@ -59,12 +59,12 @@
 
 			<div class="md:block md:w-auto hidden w-full" id="navbar-default">
 				<ul
-					class="md:items-center border-primary-100 bg-primary-50 md:flex-row md:space-x-8 md:border-0 md:bg-white dark:bg-primary-800 md:dark:bg-primary-900 dark:border-primary-700 flex flex-col p-4 border rounded-lg"
+					class="md:items-center border-slate-100 bg-slate-50 md:flex-row md:space-x-8 md:border-0 md:bg-white dark:bg-slate-800 md:dark:bg-slate-900 dark:border-slate-700 flex flex-col p-4 border rounded-lg"
 				>
 					<li>
 						<a
 							href="/prices"
-							class="permalink text-primary-700 hover:bg-primary-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-primary-400 md:dark:hover:text-white dark:hover:bg-primary-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
+							class="permalink text-slate-700 hover:bg-slate-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-slate-400 md:dark:hover:text-white dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
 							>Prices</a
 						>
 					</li>
@@ -73,17 +73,17 @@
 						<li>
 							<a
 								href="/login"
-								class="permalink text-primary-700 hover:bg-primary-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-primary-400 md:dark:hover:text-white dark:hover:bg-primary-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
+								class="permalink text-slate-700 hover:bg-slate-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-slate-400 md:dark:hover:text-white dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
 								>Login</a
 							>
 						</li>
 					{:else}
 						<Dropdown>
 							<div slot="trigger">
-								<IconUserCircle class="dark:text-primary-100 text-primary-500 w-8 h-8" />
+								<IconUserCircle class="dark:text-slate-100 text-slate-500 w-7 h-7" />
 							</div>
 
-							<div slot="content" class="bg-primary-50 grid gap-2 p-4 rounded-md">
+							<div slot="content" class="bg-slate-50 grid gap-2 p-4 rounded-md">
 								<a href="/account" class="hover:underline permalink">Account</a>
 
 								{#if data.user.role !== 'client'}
