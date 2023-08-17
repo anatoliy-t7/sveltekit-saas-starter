@@ -1,38 +1,24 @@
 import { render } from 'svelte-email';
-import VerifyEmail from '$lib/components/emails/VerifyEmail.svelte';
 import SendOtp from '$lib/components/emails/SendOtp.svelte';
-import ResetPassword from '$lib/components/emails/ResetPassword.svelte';
 import nodemailer from 'nodemailer';
 import { PUBLIC_APP_NAME, PUBLIC_EMAIL } from '$env/static/public';
 import { IncomingWebhook } from '@slack/webhook';
 import { env } from '$env/dynamic/private';
+import { dev } from '$app/environment';
 const url = env.PRIVATE_SLACK_WEBHOOK_URL_STORE;
 
 export async function sendEmail(email: string, subject: string, template: string, prop: any) {
 	const transporter = nodemailer.createTransport({
-		host: '127.0.0.1',
-		port: 1025,
-		secure: false
+		host: env.PRIVATE_EMAIL_SERVER_HOST,
+		port: env.PRIVATE_EMAIL_SERVER_PORT,
+		secure: !dev,
+		auth: {
+			user: env.PRIVATE_EMAIL_SERVER_USER,
+			pass: env.PRIVATE_EMAIL_SERVER_PASSWORD
+		}
 	});
 
 	let emailHtml;
-	if (template == 'verify-email') {
-		emailHtml = render({
-			template: VerifyEmail,
-			props: {
-				link: prop
-			}
-		});
-	}
-
-	if (template == 'reset-password') {
-		emailHtml = render({
-			template: ResetPassword,
-			props: {
-				link: prop
-			}
-		});
-	}
 
 	if (template == 'send-otp') {
 		emailHtml = render({
