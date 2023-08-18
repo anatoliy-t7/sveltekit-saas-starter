@@ -1,6 +1,6 @@
 import { auth } from '$lib/server/lucia';
-import { generateRandomString, isWithinExpiration } from 'lucia/utils';
-import { fail, json, redirect } from '@sveltejs/kit';
+import { generateRandomString } from 'lucia/utils';
+import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { userSchema, otpSchema } from '$lib/zod';

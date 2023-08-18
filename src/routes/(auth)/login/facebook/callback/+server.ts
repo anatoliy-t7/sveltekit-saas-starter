@@ -6,6 +6,7 @@ export const GET = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get('facebook_oauth_state');
 	const state = url.searchParams.get('state');
 	const code = url.searchParams.get('code');
+
 	// validate state
 	if (!storedState || !state || storedState !== state || !code) {
 		return new Response(null, {
@@ -40,6 +41,7 @@ export const GET = async ({ url, cookies, locals }) => {
 					email_verified: true,
 					role: 'client',
 					name: facebookUser.name,
+					active: true,
 					avatar: facebookUser.picture ? facebookUser.picture.data.url : null
 				}
 			});

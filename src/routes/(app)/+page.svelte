@@ -6,4 +6,4 @@
 	<title>{PUBLIC_APP_NAME}</title>
 </svelte:head>
 
-<main class="max-w-screen-xl px-4 mx-auto">MAIN</main>
+<main class="max-w-screen-xl px-4 mx-auto">Main Page</main>
