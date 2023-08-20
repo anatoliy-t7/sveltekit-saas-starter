@@ -108,7 +108,7 @@ export const actions: Actions = {
 				console.log('verify.attempts', verify.attempts);
 
 				if (verify.attempts <= 0) {
-					return setError(otpForm, 'email', 'Attempts exhausted, try to enter new OTP');
+					return setError(otpForm, 'email', 'Attempts exhausted, try again');
 				}
 
 				return setError(otpForm, 'otp', 'Invalid verification code');

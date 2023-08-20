@@ -1,11 +1,14 @@
 <script>
 	import IconUserCircle from '~icons/tabler/user-circle';
+	import { isMobile } from '$lib/client/utils';
 	import Dropdown from '$lib/components/Dropdown.svelte';
 	import { drawerStore } from '@skeletonlabs/skeleton';
 	export let user;
 
 	function drawerClose() {
-		drawerStore.close();
+		if (isMobile()) {
+			drawerStore.close();
+		}
 	}
 </script>
 
@@ -13,7 +16,7 @@
 	<li>
 		<a
 			on:click={drawerClose}
-			href="/prices"
+			href="/pricing"
 			class="permalink text-slate-700 hover:text-blue-700 block px-2">Pricing</a
 		>
 	</li>

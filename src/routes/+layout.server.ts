@@ -5,6 +5,7 @@ export const load = async (event) => {
 	const session = await authRequest.validate();
 
 	return {
-		user: session?.user
+		user: session?.user,
+		url: event.url.pathname
 	};
 };
