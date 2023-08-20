@@ -22,7 +22,7 @@
 			on:click={() => (open = false)}
 			role="button"
 			tabindex="0"
-			class="absolute right-0 z-50 w-48 mt-2 transition duration-300 rounded-md shadow-lg"
+			class="absolute right-0 z-50 w-48 mt-2 transition duration-300 rounded-md shadow-lg border border-slate-100 bg-white"
 		>
 			<slot name="content" />
 		</div>

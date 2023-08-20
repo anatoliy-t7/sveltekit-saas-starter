@@ -13,7 +13,7 @@
 <main class="p-8 max-w-screen-xl space-y-6">
 	<div class="flex justify-between items-center">
 		<h3>Users</h3>
-		<a href="/admin/users/new" class="btn variant-filled-primary">Add new</a>
+		<a href="/admin/users/new" class="btn variant-soft-primary">Add new</a>
 	</div>
 
 	<div class="table-container">
@@ -36,7 +36,7 @@
 						</td>
 						<td>
 							{#if user.active}
-								<span class="badge-icon variant-filled-secondary" />
+								<span class="badge-icon variant-soft-secondary" />
 							{:else}
 								<span class="badge-icon variant-filled" />
 							{/if}

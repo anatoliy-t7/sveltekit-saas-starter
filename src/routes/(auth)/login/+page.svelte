@@ -106,7 +106,7 @@
 					<button
 						disabled={value.length != 6 || sending}
 						type="submit"
-						class="btn variant-filled-primary w-full"
+						class="btn variant-soft-primary w-full"
 					>
 						{#if sending}
 							Verifying
@@ -145,7 +145,7 @@
 					{/if}
 				</label>
 
-				<button type="submit" class="btn variant-filled-primary w-full"> Sign In </button>
+				<button type="submit" class="btn variant-soft-primary w-full"> Sign In </button>
 			</form>
 
 			<div class="relative py-6">
@@ -153,7 +153,7 @@
 					<div class="w-full border-t border-gray-400"></div>
 				</div>
 				<div class="relative flex justify-center">
-					<span class="bg-white px-6 text-slate-500 uppercase text-sm">or continue with</span>
+					<span class="bg-white px-6 text-slate-500 uppercase text-xs">or continue with</span>
 				</div>
 			</div>
 

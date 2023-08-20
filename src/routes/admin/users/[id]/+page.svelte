@@ -136,7 +136,7 @@
 						<button
 							on:click={(e) => !confirm('Are you sure?') && e.preventDefault()}
 							type="submit"
-							class="btn variant-filled-error">Delete</button
+							class="btn variant-soft-error">Delete</button
 						>
 					</form>
 				{/if}

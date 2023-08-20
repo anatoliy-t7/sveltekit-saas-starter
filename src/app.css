@@ -1,3 +1,10 @@
+@font-face {
+	/* Reference name */
+	font-family: 'Inter';
+	/* For multiple files use commas, ex: url(), url(), ... */
+	src: url('/fonts/Inter-VariableFont_slnt,wght.ttf');
+}
+
 html {
 	@apply h-full;
 }
@@ -51,7 +58,10 @@ table tr td {
 .radio,
 .select,
 .textarea {
-	@apply bg-slate-50 dark:bg-surface-800 border-slate-400 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
+	@apply bg-white dark:bg-surface-800 border-slate-400 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
+}
+.label span {
+	@apply text-sm;
 }
 
 .table {

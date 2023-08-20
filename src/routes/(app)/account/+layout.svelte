@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-300' : '');
+	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-200' : '');
 </script>
 
 <main class="px-4 max-w-screen-xl mx-auto py-4">

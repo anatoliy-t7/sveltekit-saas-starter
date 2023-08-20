@@ -55,7 +55,7 @@
 			</label>
 
 			<div class="flex justify-end">
-				<button type="submit" class="btn variant-filled-primary"> Save </button>
+				<button type="submit" class="btn variant-soft-secondary"> Save </button>
 			</div>
 		</div>
 	</form>
