@@ -1,10 +1,11 @@
 <script>
 	// @ts-nocheck
-	import IconUserCircle from '~icons/tabler/user-circle';
-	import Dropdown from '$lib/components/Dropdown.svelte';
+	import { isMobile } from '$lib/client/utils';
 	import Logo from '$lib/components/Logo.svelte';
+	import MainMenu from '$lib/components/client/MainMenu.svelte';
+	import IconMenu2 from '~icons/tabler/menu-2';
+	import { drawerStore } from '@skeletonlabs/skeleton';
 	import { createEventDispatcher } from 'svelte';
-
 	export let duration = '500ms';
 	export let offset = 0;
 	export let tolerance = 0;
@@ -33,9 +34,6 @@
 		return result;
 	}
 
-	/**
-	 * @param {HTMLDivElement} node
-	 */
 	function action(node) {
 		node.style.transitionDuration = duration;
 	}
@@ -47,61 +45,27 @@
 		}
 		lastHeaderClass = headerClass;
 	}
+
+	function drawerOpen() {
+		drawerStore.open();
+	}
 </script>
 
 <svelte:window bind:scrollY={y} />
-<div use:action class="{headerClass} fixed w-full top-0 transition-all z-50">
-	<nav class="dark:bg-slate-900 border-slate-100 bg-white border-b">
-		<div class="flex items-center justify-between max-w-screen-xl px-4 mx-auto">
+<div use:action class="{headerClass} w-full top-0 transition-all z-30 duration-500 fixed">
+	<nav class="dark:bg-slate-900 border-slate-100 border-b bg-white">
+		<div class="flex items-center justify-between max-w-screen-xl p-4 mx-auto">
 			<a href="/" class="flex items-center">
-				<Logo class="sm:h-9 h-6" />
+				<Logo />
 			</a>
 
-			<div class="md:block md:w-auto hidden w-full" id="navbar-default">
-				<ul
-					class="md:items-center border-slate-100 bg-slate-50 md:flex-row md:space-x-8 md:border-0 md:bg-white dark:bg-slate-800 md:dark:bg-slate-900 dark:border-slate-700 flex flex-col p-4 border rounded-lg"
-				>
-					<li>
-						<a
-							href="/prices"
-							class="permalink text-slate-700 hover:bg-slate-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-slate-400 md:dark:hover:text-white dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
-							>Pricing</a
-						>
-					</li>
-
-					{#if !data.user}
-						<li>
-							<a
-								href="/login"
-								class="permalink text-slate-700 hover:bg-slate-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-slate-400 md:dark:hover:text-white dark:hover:bg-slate-700 dark:hover:text-white md:dark:hover:bg-transparent block py-2 pl-3 pr-4 rounded"
-								>Sign In/Up</a
-							>
-						</li>
-					{:else}
-						<Dropdown>
-							<div slot="trigger">
-								<IconUserCircle class="dark:text-slate-100 text-slate-500 w-7 h-7" />
-							</div>
-
-							<div slot="content" class="grid gap-2 p-4 rounded-md">
-								<a href="/account" class="hover:underline permalink">Account</a>
-
-								{#if data.user.role !== 'client'}
-									<a href="/admin" class="hover:underline permalink"> Dashboard</a>
-								{/if}
-
-								<a
-									data-sveltekit-preload-data="off"
-									href="/logout"
-									class="hover:underline permalink"
-								>
-									Logout</a
-								>
-							</div>
-						</Dropdown>
-					{/if}
-				</ul>
-			</div>
+			{#if isMobile()}
+				<button on:click={drawerOpen}>
+					<IconMenu2 class="w-6 h-6" />
+				</button>
+			{:else}
+				<MainMenu user={data.user} />
+			{/if}
 		</div>
 	</nav>
 </div>

@@ -1,6 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { readable } from 'svelte/store';
 import { navigating } from '$app/stores';
+import { browser } from '$app/environment';
 
 export function handleLoginRedirect(event: RequestEvent) {
 	const redirectTo = event.url.pathname + event.url.search;
@@ -46,3 +47,17 @@ const removeQueryValue = (params: URLSearchParams, key: string, valueToRemove: a
 		}
 	}
 };
+
+export function isMobile() {
+	if (browser) {
+		if (
+			/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}

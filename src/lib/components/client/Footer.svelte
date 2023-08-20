@@ -5,7 +5,7 @@
 
 <footer class="border-slate-100 py-12 border-t">
 	<div class="max-w-screen-xl px-4 mx-auto">
-		<div class="sm:grid-cols-3 lg:grid-cols-4 grid grid-cols-2 gap-6 mb-10">
+		<div class="sm:grid-cols-3 lg:grid-cols-4 grid grid-cols-1 gap-6 mb-10">
 			<div>
 				<a href="/">
 					<Logo />
