@@ -11,6 +11,16 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+enum SubscriptionStatus {
+  INCOMPLETE
+  INCOMPLETE_EXPIRED
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+}
+
 model User {
     id          String   @id @unique
     name        String?
@@ -24,7 +34,25 @@ model User {
 
     verification_code VerificationCode[]
 
+    plan_id Int?
+    plan Plan? @relation(fields: [plan_id], references: [id])
+
+    customer_id String?
+    subscription_id String?
+    status SubscriptionStatus?
+
     @@map("user")
+}
+
+model Plan {
+    id Int @id @default(autoincrement())
+    handle String @unique
+    name String
+    price Int
+    price_id String @unique
+    users User[]
+
+    @@map("plan")
 }
 
 model Session {

@@ -25,7 +25,7 @@
 
 <main>
 	<div class="max-w-screen-md flex gap-6 items-center">
-		<a href="/admin/users" class="hover p-1">
+		<a href="/dashboard/users" class="hover p-1">
 			<IconChevronLeft class="dark:text-primary-100" />
 		</a>
 		<h3 class="my-6 text-2xl font-semibold text-primary-700 dark:text-primary-200">

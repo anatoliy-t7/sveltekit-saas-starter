@@ -3,22 +3,25 @@ import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { PUBLIC_DOMAIN } from '$env/static/public';
 
-const handleAuth: Handle = async ({ event, resolve }) => {
+const protectedPaths = ['/dashboard'];
+
+const authenticate: Handle = async ({ event, resolve }) => {
 	event.locals.auth = auth.handleRequest(event);
+
 	const response = await resolve(event);
 	return response;
 };
 
-const handleMiddleware: Handle = async ({ resolve, event }) => {
+const protect: Handle = async ({ resolve, event }) => {
 	const authRequest = auth.handleRequest(event);
 	const session = await authRequest.validate();
 
-	if (event.url.pathname.startsWith('/account') && !session?.user) {
+	if (protectedPaths.includes(event.url.pathname) && !session) {
 		throw redirect(303, '/login');
 	}
 
-	if (event.url.pathname.startsWith('/admin') && session?.user?.role !== 'admin') {
-		throw redirect(303, '/login');
+	if (event.url.pathname.startsWith('/dashboard/users') && session?.user?.role !== 'admin') {
+		throw redirect(303, '/dashboard');
 	}
 
 	if (event.url.pathname.startsWith('/api')) {
@@ -43,9 +46,9 @@ const handleMiddleware: Handle = async ({ resolve, event }) => {
 	return response;
 };
 
-export const handle = sequence(handleAuth, handleMiddleware);
+export const handle = sequence(authenticate, protect);
 
-export const handleError = ({ error, event }) => {
+export const error = ({ error, event }) => {
 	console.error(error);
 	return {
 		message: "An unexpected error occurred. We're working on it."

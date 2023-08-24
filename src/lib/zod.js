@@ -12,5 +12,6 @@ export const userSchema = z.object({
 
 export const otpSchema = z.object({
 	otp: z.string().max(6),
-	email: z.string()
+	email: z.string(),
+	plan: z.string().optional()
 });

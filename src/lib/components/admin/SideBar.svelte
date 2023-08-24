@@ -14,12 +14,12 @@
 	export let links = [
 		{
 			name: 'Dashboard',
-			url: '/admin',
+			url: '/dashboard',
 			icon: IconDashboard
 		},
 		{
 			name: 'Users',
-			url: '/admin/users',
+			url: '/dashboard/users',
 			icon: IconUsers
 		}
 	];

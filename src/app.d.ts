@@ -5,12 +5,14 @@ declare global {
 	namespace Lucia {
 		type Auth = import('$lib/server/services/auth').Auth;
 		type DatabaseUserAttributes = {
+			id: string?;
 			name: string?;
 			email: string;
 			email_verified: boolean;
 			role: string;
 			avatar: string?;
 			active: boolean?;
+			plan_id: number?;
 		};
 		type DatabaseSessionAttributes = {};
 	}
@@ -22,6 +24,14 @@ declare global {
 		}
 		// interface PageData {}
 		// interface Platform {}
+	}
+
+	interface Plan {
+		id: number?;
+		handle: string;
+		name: string;
+		price: number;
+		price_id: number;
 	}
 }
 

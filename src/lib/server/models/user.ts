@@ -3,7 +3,7 @@ import { setError } from 'sveltekit-superforms/server';
 import { auth } from '../services/auth';
 import { fail, redirect } from '@sveltejs/kit';
 
-export const getUserList = async (limit: number = 15, page: number = 1) => {
+export const pagination = async (limit: number = 15, page: number = 1) => {
 	return await db.user.paginate().withPages({
 		limit: limit,
 		page: page,
@@ -11,17 +11,22 @@ export const getUserList = async (limit: number = 15, page: number = 1) => {
 	});
 };
 
-export const getUser = async (id: string | undefined) => {
-	return id
-		? await db.user.findUnique({
-				where: {
-					id: id
-				}
-		  })
-		: null;
-};
+export function get(id: string) {
+	return getBy({ id });
+}
 
-export const saveUser = async (form: any) => {
+export function getBy(where: any) {
+	return db.user.findUnique({ where });
+}
+
+export function update(id: string, data: object) {
+	return db.user.update({
+		data,
+		where: { id }
+	});
+}
+
+export const save = async (form: any) => {
 	if (form.data.id) {
 		await db.user.update({
 			where: {
@@ -59,10 +64,10 @@ export const saveUser = async (form: any) => {
 			}
 		});
 	}
-	throw redirect(303, '/admin/users');
+	throw redirect(303, '/dashboard/users');
 };
 
-export const deleteUser = async (id: string) => {
+export const remove = async (id: string) => {
 	try {
 		await db.user.delete({
 			where: {
@@ -73,5 +78,5 @@ export const deleteUser = async (id: string) => {
 		console.error(e);
 		return fail(400, { e });
 	}
-	throw redirect(303, '/admin/users');
+	throw redirect(303, '/dashboard/users');
 };

@@ -39,7 +39,7 @@
 				<a on:click={drawerClose} href="/account" class="hover:underline permalink">Account</a>
 
 				{#if user.role !== 'client'}
-					<a href="/admin" class="hover:underline permalink"> Dashboard</a>
+					<a href="/dashboard" class="hover:underline permalink"> Dashboard</a>
 				{/if}
 
 				<a

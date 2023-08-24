@@ -74,6 +74,7 @@
 					Please enter the code in order sign in.
 				</div>
 				<div class="flex justify-center">
+					<input type="hidden" name="plan" bind:value={$otpForm.plan} />
 					<input type="hidden" name="otp" bind:value={$otpForm.otp} />
 					<input type="hidden" name="email" bind:value={$otpForm.email} />
 					<Pincode
@@ -83,6 +84,7 @@
 						on:complete={(e) => {
 							$otpForm.otp = e.detail.value;
 							$otpForm.email = $form.email;
+							$otpForm.plan = data.plan;
 							sending = true;
 							setTimeout(() => {
 								formOtp.dispatchEvent(new Event('submit', { bubbles: true }));
@@ -102,7 +104,7 @@
 					<button
 						disabled={value.length != 6 || sending}
 						type="submit"
-						class="btn variant-soft-primary w-full"
+						class="btn variant-filled-primary w-full"
 					>
 						{#if sending}
 							Verifying
@@ -155,7 +157,7 @@
 
 			<div class="space-y-4">
 				<a
-					href="/login/google"
+					href="/login/google?plan={data.plan}"
 					aria-label="Continue with google"
 					role="button"
 					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"
@@ -184,7 +186,7 @@
 				</a>
 
 				<a
-					href="/login/facebook"
+					href="/login/facebook?plan={data.plan}"
 					aria-label="Continue with facebook"
 					role="button"
 					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"

@@ -6,6 +6,9 @@ import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { userSchema, otpSchema } from '$lib/zod';
 import { db } from '$lib/server/services/prisma';
 import { sendEmail } from '$lib/server/utils';
+import * as plans from '$lib/server/models/plan';
+import * as users from '$lib/server/models/user';
+import * as billing from '$lib/server/services/billing';
 
 const emailSchema = userSchema.pick({
 	email: true
@@ -16,11 +19,13 @@ let email: string;
 export const load: PageServerLoad = async (event) => {
 	const authRequest = auth.handleRequest(event);
 	const session = await authRequest.validate();
-	if (session) throw redirect(302, '/');
+	if (session) throw redirect(302, '/dashboard');
+
+	const plan = event.url.searchParams.get('plan');
 
 	const emailForm = await superValidate(emailSchema);
 	const otpForm = await superValidate(otpSchema);
-	return { emailForm, otpForm, email };
+	return { emailForm, otpForm, email, plan };
 };
 
 export const actions: Actions = {
@@ -29,11 +34,7 @@ export const actions: Actions = {
 
 		if (!emailForm.valid) return fail(400, { emailForm });
 
-		let user = await db.user.findUnique({
-			where: {
-				email: emailForm.data.email
-			}
-		});
+		let user = await users.getBy({ email: emailForm.data.email });
 
 		const code = generateRandomString(6, '0123456789');
 
@@ -85,8 +86,6 @@ export const actions: Actions = {
 		});
 
 		if (user) {
-			// return message(otpForm, { message: 'Too many requests' });
-
 			let verify = await db.verificationCode.findFirst({
 				where: {
 					user_id: user.id
@@ -105,8 +104,6 @@ export const actions: Actions = {
 					}
 				});
 
-				console.log('verify.attempts', verify.attempts);
-
 				if (verify.attempts <= 0) {
 					return setError(otpForm, 'email', 'Attempts exhausted, try again');
 				}
@@ -114,13 +111,22 @@ export const actions: Actions = {
 				return setError(otpForm, 'otp', 'Invalid verification code');
 			}
 
+			await users.update(user.id, { active: true });
+
 			const session = await auth.createSession({
 				userId: user.id,
 				attributes: {}
 			});
 			event.locals.auth.setSession(session);
 
-			throw redirect(303, '/');
+			if (otpForm.data.plan) {
+				const plan: Plan = await plans.getBy({ handle: otpForm.data.plan });
+				const checkout = await billing.createCheckout(session?.user, plan);
+
+				throw redirect(303, checkout.url);
+			}
+
+			throw redirect(303, '/dashboard');
 		} else {
 			return message(otpForm, { message: 'User not found' });
 		}

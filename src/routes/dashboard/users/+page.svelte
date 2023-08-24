@@ -3,7 +3,7 @@
 	import Pagination from '$lib/components/Pagination.svelte';
 
 	export let data;
-	let url = '/admin/users/';
+	let url = '/dashboard/users/';
 </script>
 
 <svelte:head>
@@ -13,7 +13,7 @@
 <main class="p-8 max-w-screen-xl space-y-6">
 	<div class="flex justify-between items-center">
 		<h3>Users</h3>
-		<a href="/admin/users/new" class="btn variant-soft-primary">Add new</a>
+		<a href="/dashboard/users/new" class="btn variant-soft-primary">Add new</a>
 	</div>
 
 	<div class="table-container">
@@ -48,7 +48,7 @@
 							{user.role}
 						</td>
 						<td>
-							<a href="/admin/users/{user.id}" class="hover w-6">
+							<a href="/dashboard/users/{user.id}" class="hover w-6">
 								<IconEdit class="w-6 h-6" />
 							</a>
 						</td>

@@ -21,12 +21,14 @@ export const auth = lucia({
 	},
 	getUserAttributes: (data) => {
 		return {
+			id: data.id,
 			name: data.name,
 			email: data.email,
 			role: data.role,
 			emailVerified: data.email_verified,
 			avatar: data.avatar,
-			active: data.active
+			active: data.active,
+			plan_id: data.plan_id
 		};
 	}
 });

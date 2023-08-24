@@ -3,21 +3,20 @@ import { ROLES } from '$lib/consts';
 import { superValidate } from 'sveltekit-superforms/server';
 import { userSchema } from '$lib/zod';
 import { serializeNonPOJOs } from '$lib/server/utils';
-import { deleteUser, getUser, saveUser } from '$lib/server/models/user';
+import * as users from '$lib/server/models/user';
 
 const fullUserSchema = userSchema.pick({
 	id: true,
 	name: true,
 	email: true,
 	role: true,
-	active: true,
-	password: true
+	active: true
 });
 
 export const load = async ({ params }) => {
 	const id: string | undefined = params.id && params.id !== 'new' ? params.id : undefined;
 
-	const user = await getUser(id);
+	const user = await users.get(id);
 
 	if (id && !user) throw error(404, 'User not found.');
 
@@ -34,13 +33,13 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		return await saveUser(form);
+		return await users.save(form);
 	},
 
 	delete: async ({ request }) => {
 		const values = await request.formData();
 		const form = await superValidate(values, userSchema);
 
-		return await deleteUser(form.data.id);
+		return await users.remove(form.data.id);
 	}
 };
