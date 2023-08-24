@@ -1,4 +1,4 @@
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/services/auth';
 
 export const load = async (event) => {
 	const authRequest = auth.handleRequest(event);

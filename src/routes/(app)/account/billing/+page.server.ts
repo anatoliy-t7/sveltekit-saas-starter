@@ -1,7 +1,7 @@
-import { auth } from '$lib/server/lucia';
-import { stripe } from '$lib/server/stripe';
-import { PUBLIC_DOMAIN } from '$env/static/public';
+import { auth } from '$lib/server/services/auth';
+import { stripe } from '$lib/server/services/stripe';
 import { redirect } from '@sveltejs/kit';
+import { PUBLIC_DOMAIN } from '$env/static/public';
 
 export const load = async (event) => {
 	const authRequest = auth.handleRequest(event);

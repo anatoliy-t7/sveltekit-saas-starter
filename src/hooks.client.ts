@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 
-export const handleError = ({ error, event }) => {
+export const handleError = ({ error }) => {
 	if (dev) {
 		console.error(error);
 	}

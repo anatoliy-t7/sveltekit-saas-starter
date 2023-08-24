@@ -1,5 +1,5 @@
-import { auth, facebookAuth } from '$lib/server/lucia.js';
-import { db } from '$lib/server/prisma';
+import { auth, facebookAuth } from '$lib/server/services/auth';
+import { db } from '$lib/server/services/prisma';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 
 export const GET = async ({ url, cookies, locals }) => {

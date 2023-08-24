@@ -1,7 +1,7 @@
-import { PUBLIC_DOMAIN } from '$env/static/public';
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/services/auth';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+import { PUBLIC_DOMAIN } from '$env/static/public';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	event.locals.auth = auth.handleRequest(event);
@@ -35,6 +35,7 @@ const handleMiddleware: Handle = async ({ resolve, event }) => {
 	}
 
 	const response = await resolve(event);
+
 	if (event.url.pathname.startsWith('/api')) {
 		response.headers.append('Access-Control-Allow-Origin', PUBLIC_DOMAIN);
 	}

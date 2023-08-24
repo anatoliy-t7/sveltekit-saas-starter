@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import { stripeClient, stripeElements } from '$lib/stores';
+	import { stripeClient, stripeElements } from '$lib/stores/stripe';
 	import { loadStripe } from '$lib/client/stripe';
 	import { error } from '@sveltejs/kit';
 	import { dev } from '$app/environment';
 
-	export let clientSecret;
+	export let clientSecret: string;
 	export let addressOptions = {};
-	export let addressContainer;
+	export let addressContainer: any;
 
 	let appearance = addressOptions.appearance || { theme: 'stripe' };
 
@@ -39,7 +39,7 @@
 
 		if (!$stripeElements) {
 			try {
-				$stripeElements = await $stripeClient.elements({ clientSecret, appearance });
+				$stripeElements = await $stripeClient?.elements({ clientSecret, appearance });
 			} catch (e) {
 				if (dev) console.error(e);
 				else throw error(500, 'Something went wrong');

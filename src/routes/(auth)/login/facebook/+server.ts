@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { facebookAuth } from '$lib/server/lucia.js';
+import { facebookAuth } from '$lib/server/services/auth';
 
 export const GET = async ({ cookies }) => {
 	const [url, state] = await facebookAuth.getAuthorizationUrl();

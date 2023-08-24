@@ -1,5 +1,5 @@
-import { auth } from '$lib/server/lucia';
-import { stripe } from '$lib/server/stripe';
+import { auth } from '$lib/server/services/auth';
+import { stripe } from '$lib/server/services/stripe';
 
 export const load = async (event) => {
 	const authRequest = auth.handleRequest(event);

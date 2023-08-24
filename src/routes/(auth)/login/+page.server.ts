@@ -1,10 +1,10 @@
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/services/auth';
 import { generateRandomString } from 'lucia/utils';
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { userSchema, otpSchema } from '$lib/zod';
-import { db } from '$lib/server/prisma';
+import { db } from '$lib/server/services/prisma';
 import { sendEmail } from '$lib/server/utils';
 
 const emailSchema = userSchema.pick({

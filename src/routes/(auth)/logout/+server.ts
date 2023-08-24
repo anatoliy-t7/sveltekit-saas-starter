@@ -1,4 +1,4 @@
-import { auth } from '$lib/server/lucia';
+import { auth } from '$lib/server/services/auth';
 import { redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {

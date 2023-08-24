@@ -29,7 +29,7 @@
 			</thead>
 
 			<tbody>
-				{#each data.users[0] as user}
+				{#each data.users as user}
 					<tr>
 						<td>
 							{user.name || ''}
@@ -57,6 +57,6 @@
 			</tbody>
 		</table>
 
-		<Pagination pagination={data.users[1]} {url} />
+		<Pagination pagination={data.meta} {url} />
 	</div>
 </main>

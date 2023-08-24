@@ -1,9 +1,9 @@
 import { error, fail } from '@sveltejs/kit';
-import { db } from '$lib/server/prisma';
+import { db } from '$lib/server/services/prisma';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { userSchema } from '$lib/zod';
-import { auth } from '$lib/server/lucia';
-import { stripe } from '$lib/server/stripe';
+import { auth } from '$lib/server/services/auth';
+import { stripe } from '$lib/server/services/stripe';
 
 const accountSchema = userSchema.pick({
 	id: true,

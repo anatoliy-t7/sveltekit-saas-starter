@@ -38,10 +38,6 @@
 		toastStore.trigger($otpMessage);
 	}
 
-	// $: if (value.length < 6) {
-	// 	$otpErrors.otp = null;
-	// }
-
 	$: if ($otpErrors.otp) {
 		sending = false;
 	}
@@ -145,7 +141,7 @@
 					{/if}
 				</label>
 
-				<button type="submit" class="btn variant-soft-primary w-full"> Sign In </button>
+				<button type="submit" class="btn variant-filled-primary w-full"> Sign In </button>
 			</form>
 
 			<div class="relative py-6">

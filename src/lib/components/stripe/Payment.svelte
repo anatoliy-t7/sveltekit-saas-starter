@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { stripeClient, stripeElements } from '$lib/stores';
+	import { stripeClient, stripeElements } from '$lib/stores/stripe';
 	import { loadStripe } from '$lib/client/stripe';
 	import { error } from '@sveltejs/kit';
 	import { dev } from '$app/environment';

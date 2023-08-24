@@ -1,23 +1,16 @@
 import { error } from '@sveltejs/kit';
-import { db } from '$lib/server/prisma';
+import { getUserList } from '$lib/server/models/user';
+import { serializeNonPOJOs } from '$lib/server/utils';
 
 export const load = async ({ url }) => {
-	const getUsers = async () => {
-		const page = Number(url.searchParams.get('page') || 1);
-		const limit = 15;
+	const page: number = Number(url.searchParams.get('page') || 1);
+	const limit: number = Number(url.searchParams.get('limit') || 15);
 
-		const users = await db.user.paginate().withPages({
-			limit: limit,
-			page: page,
-			includePageCount: true
-		});
+	const [users, meta] = await getUserList(limit, page);
 
-		if (!users) {
-			throw error(404, 'Users not found');
-		}
+	if (!users) {
+		throw error(404, 'Users not found');
+	}
 
-		return JSON.parse(JSON.stringify(users));
-	};
-
-	return { users: getUsers() };
+	return { users: serializeNonPOJOs(users), meta };
 };
