@@ -22,6 +22,9 @@ export const load: PageServerLoad = async (event) => {
 	if (session) throw redirect(302, '/dashboard');
 
 	const plan = event.url.searchParams.get('plan');
+	if (plan) {
+		event.locals.plan = plan;
+	}
 
 	const emailForm = await superValidate(emailSchema);
 	const otpForm = await superValidate(otpSchema);

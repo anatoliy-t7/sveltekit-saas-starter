@@ -21,6 +21,7 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			auth: import('lucia').AuthRequest;
+			plan: string?;
 		}
 		// interface PageData {}
 		// interface Platform {}

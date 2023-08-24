@@ -1,11 +1,14 @@
 import { auth, facebookAuth } from '$lib/server/services/auth';
 import { db } from '$lib/server/services/prisma';
 import { OAuthRequestError } from '@lucia-auth/oauth';
+import * as billing from '$lib/server/services/billing';
+import * as plans from '$lib/server/models/plan';
 
 export const GET = async ({ url, cookies, locals }) => {
 	const storedState = cookies.get('facebook_oauth_state');
 	const state = url.searchParams.get('state');
 	const code = url.searchParams.get('code');
+	const planHandle = cookies.get('user_plan');
 
 	// validate state
 	if (!storedState || !state || storedState !== state || !code) {
@@ -16,8 +19,6 @@ export const GET = async ({ url, cookies, locals }) => {
 	try {
 		const { existingUser, facebookUser, createUser, createKey } =
 			await facebookAuth.validateCallback(code);
-
-		console.log('facebookUser', facebookUser);
 
 		const getUser = async () => {
 			if (existingUser) return existingUser;
@@ -53,6 +54,19 @@ export const GET = async ({ url, cookies, locals }) => {
 			attributes: {}
 		});
 		locals.auth.setSession(session);
+
+		if (planHandle) {
+			const plan: Plan = await plans.getBy({ handle: planHandle });
+			const checkout = await billing.createCheckout(session?.user, plan);
+
+			return new Response(null, {
+				status: 302,
+				headers: {
+					Location: checkout.url
+				}
+			});
+		}
+
 		return new Response(null, {
 			status: 302,
 			headers: {

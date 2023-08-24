@@ -1,5 +1,4 @@
 import { stripe } from '$lib/server/services/stripe';
-import { env } from '$env/dynamic/private';
 import { PUBLIC_DOMAIN } from '$env/static/public';
 import * as users from '$lib/server/models/user';
 import * as plans from '$lib/server/models/plan';

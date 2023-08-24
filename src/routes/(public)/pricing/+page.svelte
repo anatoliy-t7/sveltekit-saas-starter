@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
+	import Plan from '$lib/components/Plan.svelte';
 	export let data;
 
 	function choose(plan: Plan) {
@@ -14,6 +14,7 @@
 
 <main class="max-w-screen-xl px-4 mx-auto">
 	{#each data.plans as plan}
+		<Plan {plan} />
 		<article>
 			<h2>{plan.name}</h2>
 

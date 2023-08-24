@@ -7,8 +7,7 @@ export const GET = async (event) => {
 	const plan = event.url.searchParams.get('plan');
 
 	if (plan) {
-		// TODO add to URL
-		console.log('url', url);
+		event.cookies.set('user_plan', plan);
 	}
 
 	// store state

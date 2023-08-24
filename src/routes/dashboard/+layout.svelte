@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SideBar from '$lib/components/admin/SideBar.svelte';
-	import Header from '$lib/components/admin/Header.svelte';
+	import SideBar from '$lib/components/dashboard/SideBar.svelte';
+	import Header from '$lib/components/dashboard/Header.svelte';
 	import { fade } from 'svelte/transition';
 	export let data;
 	import { AppShell, Drawer, Modal, Toast } from '@skeletonlabs/skeleton';
