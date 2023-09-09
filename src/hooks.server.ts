@@ -48,7 +48,7 @@ const protect: Handle = async ({ resolve, event }) => {
 
 export const handle = sequence(authenticate, protect);
 
-export const error = ({ error, event }) => {
+export const handleError = ({ error, event }) => {
 	console.error(error);
 	return {
 		message: "An unexpected error occurred. We're working on it."

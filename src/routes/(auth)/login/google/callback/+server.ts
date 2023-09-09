@@ -17,11 +17,13 @@ export const GET = async ({ url, cookies, locals }) => {
 		});
 	}
 	try {
-		const { existingUser, googleUser, googleTokens, createUser, createKey } =
+		const { getExistingUser, googleUser, createUser, createKey } =
 			await googleAuth.validateCallback(code);
 
 		const getUser = async () => {
+			const existingUser = await getExistingUser();
 			if (existingUser) return existingUser;
+
 			if (!googleUser.email_verified) {
 				throw new Error('Email not verified');
 			}
@@ -54,7 +56,7 @@ export const GET = async ({ url, cookies, locals }) => {
 		});
 		locals.auth.setSession(session);
 
-		if (planHandle) {
+		if (planHandle && planHandle !== 'null') {
 			const plan: Plan = await plans.getBy({ handle: planHandle });
 			const checkout = await billing.createCheckout(session?.user, plan);
 

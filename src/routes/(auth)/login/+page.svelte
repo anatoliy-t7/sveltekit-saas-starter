@@ -4,9 +4,11 @@
 	import Pincode from '$lib/components/Pincode.svelte';
 	import PincodeInput from '$lib/components/PincodeInput.svelte';
 	import Error from '$lib/components/Error.svelte';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { slide } from 'svelte/transition';
 	export let data;
+
+	const toastStore = getToastStore();
 
 	let otpView = false;
 	let code: string[] = [];
@@ -49,13 +51,13 @@
 	}
 </script>
 
-<div class="space-y-6 lg:w-80">
+<div class="lg:w-80 space-y-6">
 	{#if hasRedirect}
 		<p class="alert">{message}</p>
 	{/if}
 
-	<div class="text-center pb-6">
-		<h2 class="text-2xl font-medium text-slate-900 unstyled">Sign In / Register</h2>
+	<div class="pb-6 text-center">
+		<h2 class="text-slate-900 unstyled text-2xl font-medium">Sign In / Register</h2>
 	</div>
 
 	{#if otpView}
@@ -151,7 +153,7 @@
 					<div class="w-full border-t border-gray-400"></div>
 				</div>
 				<div class="relative flex justify-center">
-					<span class="bg-white px-6 text-slate-500 uppercase text-xs">or continue with</span>
+					<span class="text-slate-500 px-6 text-xs uppercase bg-white">or continue with</span>
 				</div>
 			</div>
 
@@ -160,7 +162,7 @@
 					href="/login/google?plan={data.plan}"
 					aria-label="Continue with google"
 					role="button"
-					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"
+					class="hover:bg-slate-50 zoom-click block p-2 border border-gray-400 rounded-lg"
 				>
 					<div class="flex items-center gap-2 pl-24">
 						<svg class="w-6 h-6" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -185,11 +187,11 @@
 					</div>
 				</a>
 
-				<a
+				<!-- <a
 					href="/login/facebook?plan={data.plan}"
 					aria-label="Continue with facebook"
 					role="button"
-					class="hover:bg-slate-50 p-2 border rounded-lg border-gray-400 block zoom-click"
+					class="hover:bg-slate-50 zoom-click block p-2 border border-gray-400 rounded-lg"
 				>
 					<div class="flex items-center gap-2 pl-24">
 						<svg class="w-5 h-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
@@ -205,18 +207,18 @@
 
 						<p class="text-base font-medium text-gray-700">Facebook</p>
 					</div>
-				</a>
+				</a> -->
 			</div>
 		</div>
 	{/if}
 
-	<div class="text-xs text-slate-500 text-center">
+	<div class="text-slate-500 text-xs text-center">
 		By clicking continue, you agree to our <a
 			href="/terms-conditions"
-			class="underline hover:text-slate-600">Terms of Service</a
+			class="hover:text-slate-600 underline">Terms of Service</a
 		>
 		and
-		<a href="/privacy-policy" class="underline hover:text-slate-600">Privacy Policy</a>
+		<a href="/privacy-policy" class="hover:text-slate-600 underline">Privacy Policy</a>
 		.
 	</div>
 </div>

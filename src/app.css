@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
 	/* Reference name */
 	font-family: 'Inter';
@@ -9,7 +13,7 @@ html {
 	@apply h-full;
 }
 body {
-	@apply w-full h-full relative grid bg-white;
+	@apply relative grid w-full h-full bg-white;
 }
 
 button,
@@ -30,7 +34,7 @@ button svg {
 }
 .hover:after {
 	content: '';
-	@apply -z-0 absolute inset-0 w-8 h-8 m-auto bg-primary-100 dark:bg-primary-500 rounded-full opacity-0;
+	@apply -z-0 bg-primary-100 dark:bg-primary-500 absolute inset-0 w-8 h-8 m-auto rounded-full opacity-0;
 	left: -11px;
 	right: -11px;
 	-webkit-transform: scale(0.3);
@@ -58,7 +62,7 @@ table tr td {
 .radio,
 .select,
 .textarea {
-	@apply bg-white dark:bg-surface-800 border-slate-400 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75;
+	@apply dark:bg-surface-800 border-slate-400 placeholder:text-surface-300 dark:placeholder:text-surface-400 disabled:cursor-not-allowed disabled:opacity-75 bg-white;
 }
 .label span {
 	@apply text-sm;

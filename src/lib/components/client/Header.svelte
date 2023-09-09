@@ -4,12 +4,14 @@
 	import Logo from '$lib/components/Logo.svelte';
 	import MainMenu from '$lib/components/client/MainMenu.svelte';
 	import IconMenu2 from '~icons/tabler/menu-2';
-	import { drawerStore } from '@skeletonlabs/skeleton';
+	import { getDrawerStore } from '@skeletonlabs/skeleton';
 	import { createEventDispatcher } from 'svelte';
 	export let duration = '500ms';
 	export let offset = 0;
 	export let tolerance = 0;
 	export let data;
+
+	const drawerStore = getDrawerStore();
 
 	let headerClass = 'pin';
 	let lastHeaderClass = 'pin';
@@ -53,7 +55,7 @@
 
 <svelte:window bind:scrollY={y} />
 <div use:action class="{headerClass} w-full top-0 transition-all z-30 duration-500 fixed">
-	<nav class="dark:bg-slate-900 border-slate-100 border-b bg-white">
+	<nav class="dark:bg-slate-900 border-slate-100 bg-white border-b">
 		<div class="flex items-center justify-between max-w-screen-xl p-4 mx-auto">
 			<a href="/" class="flex items-center">
 				<Logo />

@@ -44,7 +44,7 @@ export async function createCheckout({ email }, plan: Plan) {
 		},
 		line_items: [
 			{
-				price: plan.price_id,
+				price: plan?.price_id,
 				quantity: 1
 			}
 		]

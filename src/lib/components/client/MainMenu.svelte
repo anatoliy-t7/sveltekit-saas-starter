@@ -2,8 +2,9 @@
 	import IconUserCircle from '~icons/tabler/user-circle';
 	import { isMobile } from '$lib/client/utils';
 	import Dropdown from '$lib/components/Dropdown.svelte';
-	import { drawerStore } from '@skeletonlabs/skeleton';
+	import { getDrawerStore } from '@skeletonlabs/skeleton';
 	export let user;
+	const drawerStore = getDrawerStore();
 
 	function drawerClose() {
 		if (isMobile()) {

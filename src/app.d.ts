@@ -2,8 +2,8 @@
 // for information about these interfaces
 /// <reference types="lucia" />
 declare global {
-	namespace Lucia {
-		type Auth = import('$lib/server/services/auth').Auth;
+	declare namespace Lucia {
+		type Auth = import("./lucia.js").Auth;
 		type DatabaseUserAttributes = {
 			id: string?;
 			name: string?;
@@ -36,4 +36,4 @@ declare global {
 	}
 }
 
-export {};
+export { };

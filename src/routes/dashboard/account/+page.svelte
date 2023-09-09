@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
 	import Error from '$lib/components/Error.svelte';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { PUBLIC_APP_NAME } from '$env/static/public';
 	export let data;
+
+	const toastStore = getToastStore();
+
 	const { form, errors, enhance, constraints, message } = superForm(data.form);
 
 	$: if ($message) {
@@ -15,10 +18,10 @@
 	<title>My account - {PUBLIC_APP_NAME}</title>
 </svelte:head>
 
-<main class="px-4 max-w-screen-xl mx-auto space-y-2">
+<main class="max-w-screen-xl px-4 mx-auto space-y-2">
 	<form method="POST" action="?/save" use:enhance>
 		<input type="hidden" name="id" value={$form.id} />
-		<div class="space-y-4 max-w-xs">
+		<div class="max-w-xs space-y-4">
 			<label class="label">
 				<span>Name</span>
 				<input

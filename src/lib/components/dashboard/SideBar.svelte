@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { drawerStore, LightSwitch, autoModeWatcher } from '@skeletonlabs/skeleton';
+	import { getDrawerStore, LightSwitch, autoModeWatcher } from '@skeletonlabs/skeleton';
 
 	import IconUsers from '~icons/tabler/users';
 	import IconDashboard from '~icons/tabler/dashboard';
 
 	import { page } from '$app/stores';
+
+	const drawerStore = getDrawerStore();
 
 	function drawerClose(): void {
 		drawerStore.close();
@@ -29,13 +31,13 @@
 	{@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
 
-<nav class="list-nav py-4 grid h-full">
+<nav class="list-nav grid h-full py-4">
 	<ul>
 		{#each links as link, a}
 			<li class="relative">
 				{#if activeUrl.pathname == link.url}
 					<span
-						class="absolute inset-y-0 left-0 w-1 bg-lime-600 rounded-tr-lg rounded-br-lg"
+						class="bg-lime-600 absolute inset-y-0 left-0 w-1 rounded-tr-lg rounded-br-lg"
 						aria-hidden="true"
 					/>
 				{/if}
@@ -56,7 +58,7 @@
 		{/each}
 	</ul>
 
-	<div class="p-4 flex flex-col justify-end">
+	<div class="flex flex-col justify-end p-4">
 		<LightSwitch rounded={'rounded-full'} />
 	</div>
 </nav>
