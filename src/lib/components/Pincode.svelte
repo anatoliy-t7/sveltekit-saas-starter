@@ -1,30 +1,14 @@
 <script>
 	// @ts-nocheck
-
-	/**
-	 * @typedef {string[]} Code
-	 * @event {{ code: Code; value: string; }} complete
-	 */
-
-	/** @type {Code} */
 	export let code = [];
-
 	export let value = '';
-
-	/** @type {"alphanumeric" | "numeric"} */
 	export let type = 'alphanumeric';
-
-	/** `true` if all inputs have a value */
 	export let complete = false;
-
 	export let selectTextOnFocus = false;
-
-	/** @type {() => void} */
 	export const focusFirstInput = () => {
 		ref.querySelector('input').focus();
 	};
 
-	/** @type {() => void} */
 	export const focusNextEmptyInput = () => {
 		for (const input of ref.querySelectorAll('input')) {
 			if (input.value.length === 0) {
@@ -34,7 +18,6 @@
 		}
 	};
 
-	/** @type {() => void} */
 	export const focusLastInput = () => {
 		ref.querySelector('input:last-of-type').focus();
 	};

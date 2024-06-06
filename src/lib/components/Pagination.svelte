@@ -9,7 +9,6 @@
 		$page.url.searchParams.delete('page');
 		$page.url.searchParams.set('page', p);
 		url = `${url}?${$page.url.searchParams.toString()}`;
-		console.log(url);
 		await goto(url);
 		await invalidateAll();
 	}
@@ -17,18 +16,18 @@
 
 {#if pagination.pageCount > 1}
 	<nav aria-label="Page navigation" class="pt-4">
-		<ul class="inline-flex -space-x-px items-center">
+		<ul class="inline-flex items-center -space-x-px">
 			<li>
 				{#if pagination.previousPage}
 					<a
 						href={url + `?page=${pagination.previousPage}`}
-						class="block py-2 px-3 text-sm font-medium border border-primary-300 text-primary-500 bg-white hover:bg-primary-100 hover:text-primary-700 dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-700 dark:hover:text-white rounded-l-lg unstyled"
+						class="border-primary-300 text-primary-500 hover:bg-primary-100 hover:text-primary-700 dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-700 dark:hover:text-white unstyled block px-3 py-2 text-sm font-medium bg-white border rounded-l-lg"
 						>Previous</a
 					>
 				{:else}
 					<button
 						disabled
-						class="block py-2 px-3 text-sm font-medium border border-primary-300 text-primary-500 bg-white disabled:cursor-not-allowed dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 rounded-l-lg unstyled"
+						class="border-primary-300 text-primary-500 disabled:cursor-not-allowed dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 unstyled block px-3 py-2 text-sm font-medium bg-white border rounded-l-lg"
 						>Previous</button
 					>
 				{/if}
@@ -51,14 +50,14 @@
 				{#if pagination.nextPage}
 					<a
 						href={url + `?page=${pagination.nextPage}`}
-						class="block py-2 px-3 text-sm font-medium border border-primary-300 text-primary-500 bg-white hover:bg-primary-100 hover:text-primary-700 dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-700 dark:hover:text-white rounded-r-lg unstyled"
+						class="border-primary-300 text-primary-500 hover:bg-primary-100 hover:text-primary-700 dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 dark:hover:bg-primary-700 dark:hover:text-white unstyled block px-3 py-2 text-sm font-medium bg-white border rounded-r-lg"
 					>
 						Next
 					</a>
 				{:else}
 					<button
 						disabled
-						class="block py-2 px-3 text-sm font-medium border border-primary-300 text-primary-500 bg-white disabled:cursor-not-allowed dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 rounded-r-lg unstyled"
+						class="border-primary-300 text-primary-500 disabled:cursor-not-allowed dark:bg-primary-800 dark:border-primary-700 dark:text-primary-400 unstyled block px-3 py-2 text-sm font-medium bg-white border rounded-r-lg"
 						>Next</button
 					>
 				{/if}

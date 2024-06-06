@@ -10,7 +10,10 @@ export async function syncCheckout(sessionId: string) {
 }
 
 export async function syncSubscription(subscriptionId: string) {
-	const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+	const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
+		expand: ['price'],
+	});
+
 	const { userId } = subscription.metadata;
 
 	const item = subscription.items.data[0];

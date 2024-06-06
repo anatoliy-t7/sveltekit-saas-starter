@@ -1,19 +1,18 @@
 <script lang="ts">
 	export let plan: Plan;
-	console.log(plan);
 </script>
 
-<div class="w-64 p-4 bg-white shadow-lg rounded-2xl dark:bg-gray-800">
-	<p class="mb-4 text-xl font-medium text-gray-800 dark:text-gray-50">Entreprise</p>
-	<p class="text-3xl font-bold text-gray-900 dark:text-white">
+<div class="rounded-2xl dark:bg-gray-800 w-64 p-4 bg-white shadow-lg">
+	<p class="dark:text-gray-50 mb-4 text-xl font-medium text-gray-800">Entreprise</p>
+	<p class="dark:text-white text-3xl font-bold text-gray-900">
 		$0
 		<span class="text-sm text-gray-300"> / month </span>
 	</p>
-	<p class="mt-4 text-xs text-gray-600 dark:text-gray-100">
+	<p class="dark:text-gray-100 mt-4 text-xs text-gray-600">
 		For most businesses that want to optimize web queries.
 	</p>
-	<ul class="w-full mt-6 mb-6 text-sm text-gray-600 dark:text-gray-100">
-		<li class="mb-3 flex items-center">
+	<ul class="dark:text-gray-100 w-full mt-6 mb-6 text-sm text-gray-600">
+		<li class="flex items-center mb-3">
 			<svg
 				class="w-6 h-6 mr-2"
 				xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +29,7 @@
 			</svg>
 			All illimited components
 		</li>
-		<li class="mb-3 flex items-center">
+		<li class="flex items-center mb-3">
 			<svg
 				class="w-6 h-6 mr-2"
 				xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +46,7 @@
 			</svg>
 			Own custom Tailwind styles
 		</li>
-		<li class="mb-3 flex items-center">
+		<li class="flex items-center mb-3">
 			<svg
 				class="w-6 h-6 mr-2"
 				xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +63,7 @@
 			</svg>
 			Unlimited Templates
 		</li>
-		<li class="mb-3 flex items-center">
+		<li class="flex items-center mb-3">
 			<svg
 				class="w-6 h-6 mr-2"
 				xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +80,7 @@
 			</svg>
 			Free premium dashboard
 		</li>
-		<li class="mb-3 flex items-center">
+		<li class="flex items-center mb-3">
 			<svg
 				class="w-6 h-6 mr-2"
 				xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +97,7 @@
 			</svg>
 			Best ranking
 		</li>
-		<li class="mb-3 flex items-center opacity-50">
+		<li class="flex items-center mb-3 opacity-50">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="6"
@@ -114,7 +113,7 @@
 			</svg>
 			Prenium svg
 		</li>
-		<li class="mb-3 flex items-center opacity-50">
+		<li class="flex items-center mb-3 opacity-50">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="6"
@@ -133,7 +132,7 @@
 	</ul>
 	<button
 		type="button"
-		class="py-2 px-4 bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+		class="hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 w-full px-4 py-2 text-base font-semibold text-center text-white transition duration-200 ease-in bg-indigo-600 rounded-lg shadow-md"
 	>
 		Choose plan
 	</button>

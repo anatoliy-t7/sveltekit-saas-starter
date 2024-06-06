@@ -22,7 +22,7 @@
 
 	{#key data.url}
 		<div in:fade={{ duration: 200, delay: 200 }} out:fade={{ duration: 200 }}>
-			<div class="container p-4 mx-auto py-6">
+			<div class="container p-4 py-6 mx-auto">
 				<slot />
 			</div>
 		</div>

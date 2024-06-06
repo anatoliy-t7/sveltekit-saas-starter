@@ -1,7 +1,5 @@
 <script>
 	// @ts-nocheck
-
-	/** @type {any} */
 	export let value = '';
 	export let id = 'input' + Math.random().toString(36);
 	export let ref = null;
